@@ -91,61 +91,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------------- Scorecard ---------------- */
   const STORAGE_KEY = 'putaMadresScorecard2026';
-  const teamRows = document.querySelectorAll('table.scorecard tbody tr');
-  const holeCount = 9;
+  const PAR = { 1:4, 2:3, 3:5, 4:3, 5:5, 6:3, 7:4, 8:3, 9:4 };
+  const HOLE_COUNT = 9;
 
   function loadState() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    } catch (e) {
-      return {};
-    }
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch (e) { return {}; }
   }
+  function saveState(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-  function saveState(state) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }
+  function applyScoreStyle(input, hole) {
+    input.classList.remove('under-par','over-par','diff-1','diff-2','diff-3');
+    const val = parseInt(input.value, 10);
+    const par = PAR[Number(hole)];   // force numeric lookup, matches data-hole exactly
+    if (isNaN(val) || par === undefined) return;
 
-  function getState() {
-    return loadState();
-  }
+    const diff = val - par;          // negative = birdie/under, positive = bogey/over
+    if (diff === 0) return;
 
-  function updateTotalsAndLeader() {
-    const state = getState();
-    let rows = [];
-
-    teamRows.forEach(row => {
-      const teamId = row.dataset.team;
-      const scores = state[teamId] || {};
-      let total = 0;
-      let filledCount = 0;
-      for (let h = 1; h <= holeCount; h++) {
-        const v = parseInt(scores[h], 10);
-        if (!isNaN(v)) { total += v; filledCount++; }
-      }
-      const totalCell = row.querySelector('.total-cell');
-      totalCell.textContent = filledCount > 0 ? total : '—';
-      row.classList.remove('leader');
-      rows.push({ row, total, filledCount });
-    });
-
-    // Determine leader: lowest total among rows with at least all holes filled at least once
-    const inPlay = rows.filter(r => r.filledCount > 0);
-    if (inPlay.length > 0) {
-      const minTotal = Math.min(...inPlay.map(r => r.total));
-      inPlay.forEach(r => {
-        if (r.total === minTotal) {
-          r.row.classList.add('leader');
-          const totalCell = r.row.querySelector('.total-cell');
-          if (!totalCell.querySelector('.leader-tag')) {
-            const tag = document.createElement('span');
-            tag.className = 'leader-tag';
-            tag.textContent = 'LEAD';
-            totalCell.appendChild(tag);
-          }
-        }
-      });
-    }
+    const clamped = Math.min(Math.abs(diff), 3);
+    input.classList.add(diff < 0 ? 'under-par' : 'over-par', `diff-${clamped}`);
   }
 
   function unlockSecret(secretId) {
@@ -157,8 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function checkSecretTriggers(state) {
-    // Hole 3 filled (any team) -> unlock Hole 4 secret
-    // Hole 6 filled (any team) -> unlock Hole 7 secret
     const triggers = { 3: 'secret-hole-4', 6: 'secret-hole-7' };
     Object.entries(triggers).forEach(([holeNum, secretId]) => {
       const anyFilled = Object.values(state).some(scores => {
@@ -169,46 +132,91 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function updateScorecard() {
+    document.querySelectorAll('tr.player-row').forEach(row => {
+      let total = 0, filled = 0;
+      row.querySelectorAll('input[type="number"]').forEach(input => {
+        const hole = input.dataset.hole;
+        applyScoreStyle(input, hole);
+        const v = parseInt(input.value, 10);
+        if (!isNaN(v)) { total += v; filled++; }
+      });
+      row.querySelector('.total-cell').textContent = filled > 0 ? total : '—';
+    });
+
+    const teamResults = [];
+    document.querySelectorAll('tr.team-total-row').forEach(row => {
+        const team = row.dataset.team;
+        let grand = 0, anyFilled = false;
+        for (let h = 1; h <= HOLE_COUNT; h++) {
+          const p1 = document.querySelector(`tr.player-row[data-team="${team}"][data-player="1"] input[data-hole="${h}"]`);
+          const p2 = document.querySelector(`tr.player-row[data-team="${team}"][data-player="2"] input[data-hole="${h}"]`);
+          const v1 = parseInt(p1.value, 10), v2 = parseInt(p2.value, 10);
+          let sum = 0, has = false;
+          if (!isNaN(v1)) { sum += v1; has = true; }
+          if (!isNaN(v2)) { sum += v2; has = true; }
+          row.querySelector(`.team-hole-total[data-hole="${h}"]`).textContent = has ? sum : '—';
+          if (has) { grand += sum; anyFilled = true; }
+        }
+        row.querySelector('.team-total-cell').textContent = anyFilled ? grand : '—';
+        row.classList.remove('leader');
+        teamResults.push({ row, grand, anyFilled });
+      });
+
+    const inPlay = teamResults.filter(t => t.anyFilled);
+    if (inPlay.length) {
+      const min = Math.min(...inPlay.map(t => t.grand));
+      inPlay.forEach(t => {
+        if (t.grand === min) {
+          t.row.classList.add('leader');
+          const totalCell = t.row.querySelector('.team-total-cell');
+          if (!totalCell.querySelector('.leader-tag')) {
+            const tag = document.createElement('span');
+            tag.className = 'leader-tag';
+            tag.textContent = 'LEAD';
+            totalCell.appendChild(tag);
+          }
+        }
+      });
+    }
+    
+  }
+
   function initScorecard() {
     const state = loadState();
 
-    // populate inputs from saved state
-    teamRows.forEach(row => {
-      const teamId = row.dataset.team;
-      const scores = state[teamId] || {};
+    document.querySelectorAll('tr.player-row').forEach(row => {
+      const key = `${row.dataset.team}-p${row.dataset.player}`;
+      const scores = state[key] || {};
       row.querySelectorAll('input[type="number"]').forEach(input => {
         const hole = input.dataset.hole;
-        if (scores[hole] !== undefined && scores[hole] !== null && scores[hole] !== '') {
-          input.value = scores[hole];
-        }
+        if (scores[hole] !== undefined && scores[hole] !== '') input.value = scores[hole];
       });
     });
 
-    updateTotalsAndLeader();
+    updateScorecard();
     checkSecretTriggers(state);
 
-    // listen for changes
-    document.querySelectorAll('table.scorecard input[type="number"]').forEach(input => {
+    document.querySelectorAll('tr.player-row input[type="number"]').forEach(input => {
       input.addEventListener('input', () => {
-        const row = input.closest('tr');
-        const teamId = row.dataset.team;
+        const row = input.closest('tr.player-row');
+        const key = `${row.dataset.team}-p${row.dataset.player}`;
         const hole = input.dataset.hole;
         const state = loadState();
-        if (!state[teamId]) state[teamId] = {};
+        if (!state[key]) state[key] = {};
 
         if (input.value === '') {
-          delete state[teamId][hole];
+          delete state[key][hole];
         } else {
           let v = parseInt(input.value, 10);
           if (isNaN(v)) v = 0;
-          if (v < 0) v = 0;
-          if (v > 20) v = 20;
+          v = Math.max(0, Math.min(20, v));
           input.value = v;
-          state[teamId][hole] = v;
+          state[key][hole] = v;
         }
 
         saveState(state);
-        updateTotalsAndLeader();
+        updateScorecard();
         checkSecretTriggers(state);
       });
     });
@@ -222,13 +230,14 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem(STORAGE_KEY);
       document.querySelectorAll('table.scorecard input[type="number"]').forEach(input => {
         input.value = '';
+        input.classList.remove('under-par','over-par','diff-1','diff-2','diff-3');
       });
       document.querySelectorAll('.secret-box.unlocked').forEach(box => box.classList.remove('show'));
       document.querySelectorAll('[id$="-locked"]').forEach(el => el.style.display = 'flex');
-      updateTotalsAndLeader();
+      updateScorecard();
     });
   }
 
-  if (teamRows.length) initScorecard();
+  if (document.querySelectorAll('tr.player-row').length) initScorecard();
 
 });
