@@ -218,14 +218,20 @@ section{ padding:5.5rem 0; position:relative; }
 .nav-scroll{
   display:flex;
   align-items:center;
-  gap:4px;
   overflow-x:auto;
   scrollbar-width:none;
   -ms-overflow-style:none;
-  flex:1 1 auto;
+  min-width:0;
   mask-image: linear-gradient(to right, transparent 0, black 16px, black calc(100% - 16px), transparent 100%);
 }
 .nav-scroll::-webkit-scrollbar{ display:none; }
+
+.nav-scroll-inner{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  margin:0 auto;
+}
 
 .nav-link{
   flex:0 0 auto;
