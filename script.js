@@ -6,6 +6,37 @@
 // Course "opens" August 29, 2026, 2:00 PM Central Time.
 // Central is UTC-5 in late August (daylight time), so this offset is exact
 // regardless of what timezone the visitor's device is set to.
+
+window.addEventListener("keydown", e => {
+
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "p") {
+
+        const password = prompt("Admin Password");
+
+        if (password === ADMIN_PASSWORD) {
+
+            sessionStorage.setItem("preview", "true");
+
+            location.reload();
+
+        } else if (password !== null) {
+
+            alert("Incorrect password.");
+
+        }
+
+    }
+
+});
+
+const ADMIN_PASSWORD = "birdie2026";
+
+const params = new URLSearchParams(window.location.search);
+
+const previewMode =
+    sessionStorage.getItem("preview") === "true" ||
+    params.get("preview") === ADMIN_PASSWORD;
+    
 const REVEAL_TIME = new Date('2026-08-29T14:00:00-05:00').getTime();
 
 function unlockSite() {
@@ -49,10 +80,13 @@ function initCountdown() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  if (Date.now() >= REVEAL_TIME) {
-    unlockSite();
+  const unlocked =
+    Date.now() >= REVEAL_TIME || previewMode;
+
+  if (unlocked) {
+      unlockSite();
   } else {
-    initCountdown();
+      initCountdown();
   }
 
   /* ---------------- Scroll reveal ---------------- */
