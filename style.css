@@ -119,49 +119,33 @@ section{ padding:5.5rem 0; position:relative; }
 .reveal-img.in-view{ opacity:1; transform:translateY(0) scale(1); }
 
 /* ============================================================
-   COUNTDOWN GATE
+   SCORECARD COUNTDOWN GATE (covers only the scorecard, not the page)
    ============================================================ */
-body.is-locked{ overflow:hidden; height:100vh; }
-body.is-locked #site-content{ display:none; }
+.scorecard-gate{ position:relative; }
+.scorecard-gate #scorecard-content{ display:block; }
+.scorecard-gate.is-locked #scorecard-content{ display:none; }
 
-#countdown-overlay{
-  position:fixed;
-  inset:0;
-  z-index:999;
-  display:flex;
+.scorecard-lock{
+  display:none;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:2rem;
-  background:
-    radial-gradient(circle at 15% 20%, rgba(149,213,178,.16), transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(233,164,0,.14), transparent 50%),
-    var(--green-deep);
-  color:var(--white);
-  transition: opacity .7s var(--ease);
+  padding:3rem 1.5rem;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
 }
-#countdown-overlay.fade-out{ opacity:0; pointer-events:none; }
-#countdown-overlay .eyebrow{ color:var(--green-mint); }
-
-.countdown-title{
-  font-family:var(--serif);
-  font-weight:900;
-  font-size:clamp(2rem, 7vw, 3.6rem);
-  line-height:1.02;
-  margin:.1em 0 .4em;
+.scorecard-gate.is-locked .scorecard-lock{ display:flex; }
+.scorecard-gate.fade-unlock .scorecard-lock{
+  animation: lockFadeOut .6s var(--ease) forwards;
 }
-.countdown-title span{ color:var(--gold); }
-
-.countdown-sub{
-  color:rgba(255,255,255,.75);
-  font-size:1rem;
-  margin:0 0 2.5rem;
-}
+@keyframes lockFadeOut{ to{ opacity:0; } }
 
 .countdown-grid{
   display:flex;
   gap:1.25rem;
+  margin:1.5rem 0 1rem;
 }
 .countdown-unit{
   background:rgba(255,255,255,.06);
@@ -191,7 +175,7 @@ body.is-locked #site-content{ display:none; }
 }
 
 .countdown-footnote{
-  margin-top:2.5rem;
+  margin-top:.5rem;
   font-size:.82rem;
   color:rgba(255,255,255,.45);
   max-width:360px;

@@ -2,55 +2,27 @@
 // PUTA MADRES PUB GOLF — site behavior
 // ============================================================
 
-// ---------------- Countdown gate ----------------
-// Course "opens" August 29, 2026, 2:00 PM Central Time.
+// ---------------- Scorecard countdown gate ----------------
+// The scorecard itself opens August 29, 2026, 2:00 PM Central Time.
 // Central is UTC-5 in late August (daylight time), so this offset is exact
 // regardless of what timezone the visitor's device is set to.
-
-window.addEventListener("keydown", e => {
-
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "p") {
-
-        const password = prompt("Admin Password");
-
-        if (password === ADMIN_PASSWORD) {
-
-            sessionStorage.setItem("preview", "true");
-
-            location.reload();
-
-        } else if (password !== null) {
-
-            alert("Incorrect password.");
-
-        }
-
-    }
-
-});
-
-const ADMIN_PASSWORD = "birdie2026";
-
-const params = new URLSearchParams(window.location.search);
-
-const previewMode =
-    sessionStorage.getItem("preview") === "true" ||
-    params.get("preview") === ADMIN_PASSWORD;
-    
+// The rest of the page (holes, teams, rules, etc.) is always visible —
+// only the scorecard table is hidden behind this countdown.
 const REVEAL_TIME = new Date('2026-08-29T14:00:00-05:00').getTime();
 
-function unlockSite() {
-  document.body.classList.remove('is-locked');
-  const overlay = document.getElementById('countdown-overlay');
-  if (overlay && !overlay.classList.contains('fade-out')) {
-    overlay.classList.add('fade-out');
-    setTimeout(() => overlay.remove(), 700);
-  }
+function unlockScorecard() {
+  const gate = document.getElementById('scorecard-gate');
+  if (!gate || !gate.classList.contains('is-locked')) return;
+  gate.classList.add('fade-unlock');
+  setTimeout(() => {
+    gate.classList.remove('is-locked');
+    gate.classList.remove('fade-unlock');
+  }, 550);
 }
 
-function initCountdown() {
-  const overlay = document.getElementById('countdown-overlay');
-  if (!overlay) return;
+function initScorecardCountdown() {
+  const gate = document.getElementById('scorecard-gate');
+  if (!gate) return;
 
   const daysEl = document.getElementById('cd-days');
   const hoursEl = document.getElementById('cd-hours');
@@ -60,7 +32,7 @@ function initCountdown() {
   function tick() {
     const diff = REVEAL_TIME - Date.now();
     if (diff <= 0) {
-      unlockSite();
+      unlockScorecard();
       clearInterval(timer);
       return;
     }
@@ -80,13 +52,10 @@ function initCountdown() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  const unlocked =
-    Date.now() >= REVEAL_TIME || previewMode;
-
-  if (unlocked) {
-      unlockSite();
+  if (Date.now() >= REVEAL_TIME) {
+    unlockScorecard();
   } else {
-      initCountdown();
+    initScorecardCountdown();
   }
 
   /* ---------------- Scroll reveal ---------------- */
