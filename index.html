@@ -7,37 +7,7 @@
 <meta name="description" content="Nine holes. Five teams. One caddie. Puta Madres Pub Golf - Downtown Minneapolis, 2026.">
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="is-locked">
-
-<!-- ============================================================
-     COUNTDOWN GATE - unlocks August 29, 2026 · 2:00 PM CT
-     ============================================================ -->
-<div id="countdown-overlay">
-  <p class="eyebrow">Tee Time</p>
-  <h1 class="countdown-title">PUTA MADRES<br><span>PUB GOLF</span></h1>
-  <p class="countdown-sub">The course opens August 29, 2026 · 2:00 PM CT</p>
-  <div class="countdown-grid">
-    <div class="countdown-unit">
-      <div class="countdown-num" id="cd-days">00</div>
-      <div class="countdown-label">Days</div>
-    </div>
-    <div class="countdown-unit">
-      <div class="countdown-num" id="cd-hours">00</div>
-      <div class="countdown-label">Hours</div>
-    </div>
-    <div class="countdown-unit">
-      <div class="countdown-num" id="cd-mins">00</div>
-      <div class="countdown-label">Minutes</div>
-    </div>
-    <div class="countdown-unit">
-      <div class="countdown-num" id="cd-secs">00</div>
-      <div class="countdown-label">Seconds</div>
-    </div>
-  </div>
-  <p class="countdown-footnote">Come back at tee time to see the course, teams, and scorecard.</p>
-</div>
-
-<div id="site-content">
+<body>
 
 <!-- ============================================================
      NAV
@@ -568,7 +538,35 @@
       Low score wins. Strongest liver survives.
     </div>
 
-    <div class="scorecard-scroll reveal">
+    <div id="scorecard-gate" class="scorecard-gate is-locked">
+
+      <!-- Shown only until tee time; covers just the scorecard, not the page -->
+      <div class="scorecard-lock">
+        <p class="eyebrow">Scorecard Opens At Tee Time</p>
+        <div class="countdown-grid">
+          <div class="countdown-unit">
+            <div class="countdown-num" id="cd-days">00</div>
+            <div class="countdown-label">Days</div>
+          </div>
+          <div class="countdown-unit">
+            <div class="countdown-num" id="cd-hours">00</div>
+            <div class="countdown-label">Hours</div>
+          </div>
+          <div class="countdown-unit">
+            <div class="countdown-num" id="cd-mins">00</div>
+            <div class="countdown-label">Minutes</div>
+          </div>
+          <div class="countdown-unit">
+            <div class="countdown-num" id="cd-secs">00</div>
+            <div class="countdown-label">Seconds</div>
+          </div>
+        </div>
+        <p class="countdown-footnote">Scores unlock August 29, 2026 · 2:00 PM CT</p>
+      </div>
+
+      <!-- Actual scorecard, hidden until the gate above unlocks -->
+      <div id="scorecard-content">
+    <div class="scorecard-scroll">
       <table class="scorecard">
         <thead>
           <tr>
@@ -653,6 +651,9 @@
       <span class="autosave-note">Scores autosave to this browser as you type.</span>
     </div>
 
+      </div><!-- /#scorecard-content -->
+    </div><!-- /#scorecard-gate -->
+
     <div class="section-footer-tag on-dark">
       <span>Puta Madres Pub Golf · 2026</span>
       <span>Live Scorecard</span>
@@ -727,7 +728,6 @@
   Puta Madres Pub Golf · 2026 Season
 </footer>
 
-</div><!-- /#site-content -->
 
 <script src="script.js"></script>
 </body>

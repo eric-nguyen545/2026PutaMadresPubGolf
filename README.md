@@ -39,6 +39,9 @@ Just replace the `#` inside the matching `<a href="#" class="placeholder-link">`
 
 ## The live scorecard
 
+- The rest of the site (holes, teams, rules, route) is visible to everyone right away — only the scorecard table itself is gated.
+- The scorecard unlocks automatically at **August 29, 2026 · 2:00 PM Central**, showing a live days/hours/minutes/seconds countdown until then. It's calculated from a fixed UTC offset, so it fires at the right moment regardless of a visitor's device timezone.
+- This is a friendly gate, not real security — anyone who opens the page source could find the markup underneath. Good for "no peeking at scores before tee time," not for anything that needs to stay actually private.
 - 5 teams × 9 holes, all editable strokes-per-hole inputs.
 - Totals and the current leader (lowest total) update live as scores are entered.
 - Scores save automatically to whoever's browser/phone is entering them (via `localStorage`) — no login, no server, no signal needed once the page is loaded. Note this means each device keeps its own copy; it's built for one caddie/scorekeeper's phone to run the card, not for everyone's phones to sync live.
