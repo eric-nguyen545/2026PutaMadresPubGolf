@@ -11,11 +11,11 @@ const TEAMS = [
       { id: 'p2', name: 'Ethan',   fullName: 'Ethan Mus',      img: 'images/team1-ethan.jpg' },
   ]},
   { id: 'team2', name: "[Insert Team Name Here]", players: [
-      { id: 'p1', name: 'Cole',  fullName: 'Cole Bridson', img: 'images/team2-cole.jpg' },
+      { id: 'p1', name: 'Alex',  fullName: 'Alex Gamber', img: 'images/team3-alex.jpg' },
       { id: 'p2', name: 'Hogan', fullName: 'Hogan Sinjem',  img: 'images/team2-hogan.jpg' },
   ]},
   { id: 'team3', name: "[Insert Team Name Here]", players: [
-      { id: 'p1', name: 'Alex',  fullName: 'Alex Gamber',    img: 'images/team3-alex.jpg' },
+      { id: 'p1', name: 'Cole',  fullName: 'Cole Bridson',    img: 'images/team2-cole.jpg' },
       { id: 'p2', name: 'Nolan', fullName: 'Nolan Peterson', img: 'images/team3-nolan.jpg' },
   ]},
   { id: 'team4', name: "[Insert Team Name Here]", players: [
