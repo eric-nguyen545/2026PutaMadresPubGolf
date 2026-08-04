@@ -3,15 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Puta Madres Pub Golf - 2026</title>
-<meta name="description" content="Nine holes. Five teams. One caddie. Puta Madres Pub Golf - Downtown Minneapolis, 2026.">
+<title>Puta Madres Pub Golf — 2026</title>
+<meta name="description" content="Nine holes. Five teams. One caddie. Puta Madres Pub Golf — Downtown Minneapolis, 2026.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ============================================================
-     NAV
-     ============================================================ -->
 <nav class="site-nav">
   <div class="nav-scroll">
     <div class="nav-inner">
@@ -44,7 +41,7 @@
   <div class="container">
     <p class="eyebrow">Est. 2026 · Downtown Minneapolis</p>
     <h1 class="hero-title">PUTA MADRES<span class="accent">PUB GOLF</span></h1>
-    <p class="hero-meta">Nine holes. Five two-man teams. One caddie enforcing the rules of the Association. Low score wins - Strongest liver survives.</p>
+    <p class="hero-meta">Nine holes. Five two-man teams. One caddie enforcing the rules of the Association. Low score wins — strongest liver survives.</p>
     <div class="hero-stats">
       <div>
         <div class="hero-stat-num">10</div>
@@ -100,7 +97,8 @@
 </section>
 
 <!-- ============================================================
-     TEAMS / ROSTER
+     TEAMS / ROSTER  (rendered dynamically from TEAMS in script.js —
+     edit the TEAMS array to rename teams or move golfers around)
      ============================================================ -->
 <section id="teams" style="background:var(--white)">
   <div class="container">
@@ -108,99 +106,7 @@
     <h2 class="section-title reveal">Meet the Teams</h2>
     <p class="section-sub reveal">Five teams. Nine holes. Let's see who's still standing.</p>
 
-  <div class="roster-grid">
-
-    <div class="roster-card reveal">
-      <div class="roster-card-head">
-        <div class="roster-num">1</div>
-        <span class="roster-team-label">[Insert Team Name Here]</span>
-      </div>
-      <div class="roster-card-players">
-        <div class="roster-player">
-          <img src="images/team1-michael.jpg" alt="Michael Prosch" loading="lazy">
-          <span>Michael Prosch</span>
-        </div>
-        <span class="roster-amp">&amp;</span>
-        <div class="roster-player">
-          <img src="images/team1-ethan.jpg" alt="Ethan Mus" loading="lazy">
-          <span>Ethan Mus</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="roster-card reveal reveal-delay-1">
-      <div class="roster-card-head">
-        <div class="roster-num">2</div>
-        <span class="roster-team-label">[Insert Team Name Here]</span>
-      </div>
-      <div class="roster-card-players">
-        <div class="roster-player">
-          <img src="images/team2-cole.jpg" alt="Cole Bridson" loading="lazy">
-          <span>Cole Bridson</span>
-        </div>
-        <span class="roster-amp">&amp;</span>
-        <div class="roster-player">
-          <img src="images/team2-hogan.jpg" alt="Hogan Sinjem" loading="lazy">
-          <span>Hogan Sinjem</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="roster-card reveal reveal-delay-2">
-      <div class="roster-card-head">
-        <div class="roster-num">3</div>
-        <span class="roster-team-label">[Insert Team Name Here]</span>
-      </div>
-      <div class="roster-card-players">
-        <div class="roster-player">
-          <img src="images/team3-alex.jpg" alt="Alex Gamber" loading="lazy">
-          <span>Alex Gamber</span>
-        </div>
-        <span class="roster-amp">&amp;</span>
-        <div class="roster-player">
-          <img src="images/team3-nolan.jpg" alt="Nolan Peterson" loading="lazy">
-          <span>Nolan Peterson</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="roster-card reveal reveal-delay-3">
-      <div class="roster-card-head">
-        <div class="roster-num">4</div>
-        <span class="roster-team-label">[Insert Team Name Here]</span>
-      </div>
-      <div class="roster-card-players">
-        <div class="roster-player">
-          <img src="images/team4-colton.jpg" alt="Colton Kayser" loading="lazy">
-          <span>Colton Kayser</span>
-        </div>
-        <span class="roster-amp">&amp;</span>
-        <div class="roster-player">
-          <img src="images/team4-cullen.jpg" alt="Cullen Mork" loading="lazy">
-          <span>Cullen Mork</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="roster-card reveal reveal-delay-4">
-      <div class="roster-card-head">
-        <div class="roster-num">5</div>
-        <span class="roster-team-label">[Insert Team Name Here]</span>
-      </div>
-      <div class="roster-card-players">
-        <div class="roster-player">
-          <img src="images/team5-eric.jpg" alt="Eric Nguyen" loading="lazy">
-          <span>Eric Nguyen</span>
-        </div>
-        <span class="roster-amp">&amp;</span>
-        <div class="roster-player">
-          <img src="images/team5-riley.jpg" alt="Riley Lamott" loading="lazy">
-          <span>Riley Lamott</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
+    <div class="roster-grid" id="roster-grid"><!-- populated by script.js --></div>
 
     <div class="section-footer-tag">
       <span>Puta Madres Pub Golf · 2026</span>
@@ -216,6 +122,13 @@
   <div class="container">
     <p class="eyebrow reveal">How to Play</p>
     <h2 class="section-title reveal">Hole-by-Hole Mechanics</h2>
+
+    <div class="rules-psa reveal">
+      <p class="rules-psa-title">⛳ Before You Tee Off</p>
+      <p>In total, there are nine holes. To keep things fair, and interesting, every player needs <strong>4 beers, 4 liquor-based drinks, and 1 dealer's choice</strong> across the round. Each hole lists a par and a recommended pour, but that's exactly what it is: a recommendation, as you can choose anything available at a bar. Look over the full list before you tee off and pick your combination accordingly.</p>
+      <p>Whatever combination you land on needs Eric's sign-off; his call is final, and if you don't agree with it, you can fuck right off.</p>
+      <p>One hole allows canned drinks only, so plan around it, and keep an eye out for hazards along the way. We're cart-path only today; have fun golfing!</p>
+    </div>
 
     <div class="rules-wrap">
       <div class="rules-list">
@@ -246,6 +159,45 @@
       </div>
     </div>
 
+    <div class="abv-tables">
+      <div class="abv-table-wrap reveal">
+        <p class="abv-table-title">Lagers, Beers, Ales &amp; Ciders</p>
+        <table class="abv-table">
+          <thead>
+            <tr><th>The Beverage</th><th>ABV</th><th>The Par</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Pint of Lager/Beer/Ale/Cider</td><td>2% – 4%</td><td class="abv-par">2</td></tr>
+            <tr><td>Pint of Lager/Beer/Ale/Cider</td><td>4% – 6%</td><td class="abv-par">3</td></tr>
+            <tr><td>Pint of Lager/Beer/Ale/Cider</td><td>6% – 8%</td><td class="abv-par">4</td></tr>
+            <tr><td>Pint of Lager/Beer/Ale/Cider</td><td>8% and above</td><td class="abv-par">5</td></tr>
+            <tr><td>Half Pint of Lager/Beer/Ale/Cider</td><td>2% – 4%</td><td class="abv-par">1</td></tr>
+            <tr><td>Half Pint of Lager/Beer/Ale/Cider</td><td>4% – 6%</td><td class="abv-par">2</td></tr>
+            <tr><td>Half Pint of Lager/Beer/Ale/Cider</td><td>6% and above</td><td class="abv-par">3</td></tr>
+            <tr><td>Bottle of Lager/Beer/Ale/Cider</td><td>2% – 4%</td><td class="abv-par">1</td></tr>
+            <tr><td>Bottle of Lager/Beer/Ale/Cider</td><td>4% – 6%</td><td class="abv-par">2</td></tr>
+            <tr><td>Bottle of Lager/Beer/Ale/Cider</td><td>6% and above</td><td class="abv-par">3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="abv-table-wrap reveal reveal-delay-1">
+        <p class="abv-table-title">Shots &amp; Mixers</p>
+        <table class="abv-table">
+          <thead>
+            <tr><th>The Beverage</th><th>ABV</th><th>The Par</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Single Shot</td><td>35% and above</td><td class="abv-par">1</td></tr>
+            <tr><td>Double Shot</td><td>35% and above</td><td class="abv-par">2</td></tr>
+            <tr><td>Triple Shot</td><td>35% and above</td><td class="abv-par">3</td></tr>
+            <tr><td>Single Shot &amp; Mixer</td><td>35% and above</td><td class="abv-par">1</td></tr>
+            <tr><td>Double Shot &amp; Mixer</td><td>35% and above</td><td class="abv-par">2</td></tr>
+            <tr><td>Triple Shot &amp; Mixer</td><td>35% and above</td><td class="abv-par">3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="section-footer-tag on-dark">
       <span>Puta Madres Pub Golf · 2026</span>
       <span>Rules</span>
@@ -260,7 +212,7 @@
   <div class="container">
     <p class="eyebrow reveal">The Route</p>
     <h2 class="section-title reveal">Downtown Crawl</h2>
-    <p class="section-sub reveal">Ten stops, tee to tee. About 1.4 miles door-to-door.</p>
+    <p class="section-sub reveal">Nine holes, tee to tee. About 1.9 miles and 43 minutes on foot, door-to-door.</p>
 
     <div class="route-wrap">
       <div class="route-map reveal-img">
@@ -269,16 +221,16 @@
       <div>
         <div class="route-fact reveal">
           <div>
-            <div class="route-fact-num">1.4</div>
+            <div class="route-fact-num">1.9</div>
             <div class="route-fact-label">Miles door-to-door</div>
           </div>
           <div>
-            <div class="route-fact-num">10</div>
-            <div class="route-fact-label">Stops, tee to tee</div>
+            <div class="route-fact-num">43</div>
+            <div class="route-fact-label">Minutes walking, tee to tee</div>
           </div>
         </div>
         <p class="section-sub reveal" style="margin-bottom:1.5rem;">Turn-by-turn walking directions, stop to stop.</p>
-        <a href="https://maps.app.goo.gl/kRaz6VNiEQq7u7Xo9" class="placeholder-link reveal">
+        <a href="https://maps.app.goo.gl/Z6QeYAtRstFKrH9P6" class="placeholder-link reveal">
           Open Route in Google Maps →
         </a>
       </div>
@@ -292,28 +244,41 @@
 </section>
 
 <!-- ============================================================
-     HOLE 1 - Rabbit Hole
+     HOLE 1 - Brit's Pub
      ============================================================ -->
 <section id="hole-1" class="hole-section">
   <div class="container">
     <div class="hole-card reveal">
       <div class="hole-photo">
         <div class="hole-photo-num">01</div>
-        <img src="images/hole1.jpg" alt="Rabbit Hole" loading="lazy">
+        <img src="images/hole9.jpg" alt="Brit's Pub" loading="lazy">
       </div>
       <div class="hole-body">
         <p class="hole-eyebrow">Hole 1 of 9</p>
-        <h3 class="hole-name">Rabbit Hole</h3>
+        <h3 class="hole-name">Brit's Pub</h3>
         <span class="hole-par">PAR 4</span>
         <p class="hole-pour-label">The Pour</p>
-        <p style="margin:0 0 .6rem;">Any Rabbit Hole cocktail:</p>
-        <ul class="hole-pour-list">
-          <li>Mule</li>
-          <li>Paloma</li>
-          <li>Old Fashioned</li>
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+          <li>Guinness Stout 4.2% ABV</li>
+          <li>Brit's ESB 6% ABV</li>
+          <li>Old Speckled Hen 5% ABV</li>
         </ul>
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
+          <li>Brit's Gin & Tonic with Beefeater</li>
+          <li>Brit's Bootleg</li>
+          <li>The Brit's Ginger with Jameson</li>
+        </ul>
+      </div>
+        </div>
+
         <div class="hole-links">
-          <a href="https://www.therabbitholemn.com/menu" class="placeholder-link"> Rabbit Hole Menu</a>
+          <a href="https://britspub.com/minneapolis-brit-s-pub-drink-menu" class="placeholder-link"> Brit's Pub Drink Menu</a>
         </div>
       </div>
     </div>
@@ -321,25 +286,41 @@
 </section>
 
 <!-- ============================================================
-     HOLE 2 - Cuzzy's
+     HOLE 2 - The Local
      ============================================================ -->
 <section id="hole-2" class="hole-section" style="background:var(--white)">
   <div class="container">
     <div class="hole-card flip reveal">
       <div class="hole-photo">
         <div class="hole-photo-num">02</div>
-        <img src="images/hole2.jpg" alt="Cuzzy's" loading="lazy">
+        <img src="images/hole8.jpg" alt="The Local" loading="lazy">
       </div>
       <div class="hole-body">
         <p class="hole-eyebrow">Hole 2 of 9</p>
-        <h3 class="hole-name">Cuzzy's</h3>
+        <h3 class="hole-name">The Local</h3>
         <span class="hole-par">PAR 3</span>
         <p class="hole-pour-label">The Pour</p>
-        <ul class="hole-pour-list">
-          <li>Light beer, below 5% ABV</li>
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+          <li>Guinness Stout 4.2% ABV</li>
+          <li>Smithwicks Red Ale 4.5% ABV</li>
+          <li>Harp Lager 5% ABV</li>
         </ul>
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
+          <li>Ginger Locks</li>
+          <li>Irish Coffee</li>
+          <li>Local's Old Fashioned On Tap</li>
+        </ul>
+      </div>
+        </div>
+
         <div class="hole-links">
-          <a href="https://cuzzys.com/beer-list/" class="placeholder-link"> Cuzzy's Beer List</a>
+          <a href="https://thelocalminneapolis.com/beverage-menu/" class="placeholder-link"> The Local Beverages</a>
         </div>
       </div>
     </div>
@@ -347,25 +328,47 @@
 </section>
 
 <!-- ============================================================
-     HOLE 3 - Bricksworth
+     HOLE 3 - Mackenzie Pub
      ============================================================ -->
 <section id="hole-3" class="hole-section">
   <div class="container">
     <div class="hole-card reveal">
       <div class="hole-photo">
         <div class="hole-photo-num">03</div>
-        <img src="images/hole3.jpg" alt="Bricksworth" loading="lazy">
+        <img src="images/hole7.jpg" alt="Mackenzie Pub" loading="lazy">
       </div>
       <div class="hole-body">
         <p class="hole-eyebrow">Hole 3 of 9</p>
-        <h3 class="hole-name">Bricksworth</h3>
-        <span class="hole-par">PAR 5</span>
+        <h3 class="hole-name">Mackenzie Pub</h3>
+        <span class="hole-par">PAR 4</span>
         <p class="hole-pour-label">The Pour</p>
-        <ul class="hole-pour-list">
-          <li>Any beer above 6.7% ABV</li>
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+          <li>805 Cerveza 4.5% ABV</li>
+          <li>This Beer Is NIIICE! 4.5% ABV</li>
+          <li>Deer Brand 4.7% ABV</li>
         </ul>
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
+          <li>Blueberry Borealis 5.8% ABV</li>
+          <li>Magners Original Irish Cider 4.5% ABV</li>
+          <li>Mango Habanero 6% ABV</li>
+        </ul>
+      </div>
+        </div>
+        <p class="hole-note">Straight from the can — it cannot be poured into a glass. Canned drinks only at this hole.</p>
+
+        <div id="secret-hole-3" class="secret-box unlocked">
+          <strong>💣 Caddie Secret — Bunker Shot</strong>
+          Every team owes one Irish Car Bomb here before moving on. Skip the drop shot and it's a 2-stroke penalty.
+        </div>
+
         <div class="hole-links">
-          <a href="https://www.bricksworthbeer.co/north-loop-drinks" class="placeholder-link">Bricksworth Beer Co. Beer List</a>
+          <a href="https://mackenziepub.com/minneapolis-theatre-district-mackenzie-pub-drink-menu" class="placeholder-link"> Mackenzie Pub Drink List</a>
         </div>
       </div>
     </div>
@@ -373,53 +376,43 @@
 </section>
 
 <!-- ============================================================
-     HOLE 4 - Killens (water hazard secret)
+     HOLE 4 - O'Donovan's
      ============================================================ -->
 <section id="hole-4" class="hole-section" style="background:var(--white)">
   <div class="container">
     <div class="hole-card flip reveal">
       <div class="hole-photo">
         <div class="hole-photo-num">04</div>
-        <img src="images/hole4.jpg" alt="Killens" loading="lazy">
+        <img src="images/hole6.jpg" alt="O'Donovan's" loading="lazy">
       </div>
       <div class="hole-body">
         <p class="hole-eyebrow">Hole 4 of 9</p>
-        <h3 class="hole-name">Killens</h3>
+        <h3 class="hole-name">O'Donovan's</h3>
         <span class="hole-par">PAR 3</span>
         <p class="hole-pour-label">The Pour</p>
-        <ul class="hole-pour-list">
-          <li>Guinness!</li>
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+          <li>Smithwicks Red Ale 4.5% ABV</li>
+          <li>Finnegans Irish Amber 4.8% ABV</li>
+          <li>Guinesss 4.25 ABV</li>
         </ul>
-
-        <div id="secret-hole-4" class="secret-box unlocked">
-          <strong>🚱 Caddie Secret - Water Hazard</strong>
-          Killens is a certified water hazard. No peeing. Any golfer caught peeing takes a 2-stroke penalty.
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
+          <li>O'Donovan's Bloody</li>
+          <li>O'Donovan's Red Rose</li>
+          <li>Irish Blueberry Black Tea</li>
+        </ul>
+      </div>
         </div>
 
         <div class="hole-links">
-          <a href="https://www.instagram.com/killens_irish_pub/?hl=en" class="placeholder-link"> Killens IG</a>
+          <a href="https://odonovans.com/" class="placeholder-link"> O'Donovan's website</a>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     THE TURN
-     ============================================================ -->
-<section id="turn" class="section-dark">
-  <div class="container">
-    <p class="eyebrow reveal">The Turn</p>
-    <h2 class="section-title reveal">Graze Food Hall</h2>
-    <p class="section-sub reveal">Food stop - refuel between the front and back nine before teeing off on Hole 5.</p>
-    <div class="turn-photos">
-      <img class="reveal-img" src="images/turn1.jpg" alt="Graze Food Hall spread" loading="lazy">
-      <img class="reveal-img reveal-delay-1" src="images/turn2.jpg" alt="Graze Food Hall spread" loading="lazy">
-      <img class="reveal-img reveal-delay-2" src="images/turn3.jpg" alt="Graze Food Hall spread" loading="lazy">
-    </div>
-    <div class="section-footer-tag on-dark">
-      <span>Puta Madres Pub Golf · 2026</span>
-      <span>The Turn</span>
     </div>
   </div>
 </section>
@@ -439,17 +432,31 @@
         <h3 class="hole-name">Smorgies</h3>
         <span class="hole-par">PAR 5</span>
         <p class="hole-pour-label">The Pour</p>
-        <ul class="hole-pour-list">
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+          <li>Tap List</li>
+          <li>Is Unknown</li>
+          <li>But There are Canned Drinks</li>
+        </ul>
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
           <li>Smorgies Hibiscus Spritz</li>
           <li>Cucumber Cooler</li>
           <li>Chelsea's Red Sangria</li>
         </ul>
+      </div>
+        </div>
         <div class="hole-bonus">
           <strong>Earning the Par 5</strong>
-          To make this hole a true par five, golfers must also take two shots.
+          To make this hole a true par five, each golfer must also take two shots.
         </div>
+
         <div class="hole-links">
-          <a href="https://www.smorgiesbar.com/menu" class="placeholder-link">Smorgies Menu</a>
+          <a href="https://www.smorgiesbar.com/menu" class="placeholder-link"> Smorgies Menu</a>
         </div>
       </div>
     </div>
@@ -457,25 +464,66 @@
 </section>
 
 <!-- ============================================================
-     HOLE 6 - O'Donovan's
+     THE TURN
+     ============================================================ -->
+<section id="turn" class="section-dark">
+  <div class="container">
+    <p class="eyebrow reveal">The Turn</p>
+    <h2 class="section-title reveal">Graze Food Hall</h2>
+    <p class="section-sub reveal">Food stop — refuel between the front and back nine before teeing off on Hole 5.</p>
+    <div class="turn-photos">
+      <img class="reveal-img" src="images/turn1.jpg" alt="Graze Food Hall spread" loading="lazy">
+      <img class="reveal-img reveal-delay-1" src="images/turn2.jpg" alt="Graze Food Hall spread" loading="lazy">
+      <img class="reveal-img reveal-delay-2" src="images/turn3.jpg" alt="Graze Food Hall spread" loading="lazy">
+    </div>
+    <div class="section-footer-tag on-dark">
+      <span>Puta Madres Pub Golf · 2026</span>
+      <span>The Turn</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOLE 6 - Killens
      ============================================================ -->
 <section id="hole-6" class="hole-section" style="background:var(--white)">
   <div class="container">
     <div class="hole-card flip reveal">
       <div class="hole-photo">
         <div class="hole-photo-num">06</div>
-        <img src="images/hole6.jpg" alt="O'Donovan's" loading="lazy">
+        <img src="images/hole4.jpg" alt="Killens" loading="lazy">
       </div>
       <div class="hole-body">
         <p class="hole-eyebrow">Hole 6 of 9</p>
-        <h3 class="hole-name">O'Donovan's</h3>
+        <h3 class="hole-name">Killens</h3>
         <span class="hole-par">PAR 3</span>
         <p class="hole-pour-label">The Pour</p>
-        <ul class="hole-pour-list">
-          <li>Guinness!</li>
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+          <li>Guinness 4.2% ABV</li>
+          <li>Harp 4.5% ABV</li>
+          <li>Smithwick's Red Lager 4.8% ABV</li>
         </ul>
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
+          <li>House Old Fashioned</li>
+          <li>Killen's House Margarita</li>
+          <li>House Manhattan</li>
+        </ul>
+      </div>
+        </div>
+
+        <div id="secret-hole-6" class="secret-box unlocked">
+          <strong>🚱 Caddie Secret — Water Hazard</strong>
+          Killens is a certified water hazard. No peeing. Any golfer caught peeing takes a 2-stroke penalty.
+        </div>
+
         <div class="hole-links">
-          <a href="https://odonovans.com/" class="placeholder-link">O'Donovan's website</a>
+          <a href="https://www.instagram.com/killens_irish_pub/?hl=en" class="placeholder-link"> Killens IG</a>
         </div>
       </div>
     </div>
@@ -483,33 +531,41 @@
 </section>
 
 <!-- ============================================================
-     HOLE 7 - Mackenzie Pub (Irish Car Bomb secret)
+     HOLE 7 - Bricksworth
      ============================================================ -->
 <section id="hole-7" class="hole-section">
   <div class="container">
     <div class="hole-card reveal">
       <div class="hole-photo">
         <div class="hole-photo-num">07</div>
-        <img src="images/hole7.jpg" alt="Mackenzie Pub" loading="lazy">
+        <img src="images/hole3.jpg" alt="Bricksworth" loading="lazy">
       </div>
       <div class="hole-body">
         <p class="hole-eyebrow">Hole 7 of 9</p>
-        <h3 class="hole-name">Mackenzie Pub</h3>
-        <span class="hole-par">PAR 4</span>
+        <h3 class="hole-name">Bricksworth</h3>
+        <span class="hole-par">PAR 5</span>
         <p class="hole-pour-label">The Pour</p>
-        <ul class="hole-pour-list">
-          <li>Any canned cider or seltzer</li>
-          <li>Any canned beer</li>
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+          <li>Couplabeers 7% ABV</li>
+          <li>Naz Reid 7.5% ABV</li>
+          <li>Terms & Conditions 6.9% ABV</li>
         </ul>
-        <p class="hole-note">Straight from the can - it cannot be poured into a glass.</p>
-
-        <div id="secret-hole-7" class="secret-box unlocked">
-          <strong>💣 Caddie Secret - Bunker Shot</strong>
-          Every team owes one Irish Car Bomb here before moving on. Skip the drop shot and it's a 2-stroke penalty.
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
+          <li>Bricksworth Bootlegger</li>
+          <li>Space Cadet</li>
+          <li>Slushy Cocktails - Grape Ape or Ube Pina Colada</li>
+        </ul>
+      </div>
         </div>
 
         <div class="hole-links">
-          <a href="https://mackenziepub.com/minneapolis-theatre-district-mackenzie-pub-drink-menu" class="placeholder-link">Mackenzie Pub Drink List</a>
+          <a href="https://www.bricksworthbeer.co/north-loop-drinks" class="placeholder-link"> Bricksworth Beer Co. Beer List</a>
         </div>
       </div>
     </div>
@@ -517,25 +573,41 @@
 </section>
 
 <!-- ============================================================
-     HOLE 8 - The Local
+     HOLE 8 - Cuzzy's
      ============================================================ -->
 <section id="hole-8" class="hole-section" style="background:var(--white)">
   <div class="container">
     <div class="hole-card flip reveal">
       <div class="hole-photo">
         <div class="hole-photo-num">08</div>
-        <img src="images/hole8.jpg" alt="The Local" loading="lazy">
+        <img src="images/hole2.jpg" alt="Cuzzy's" loading="lazy">
       </div>
       <div class="hole-body">
         <p class="hole-eyebrow">Hole 8 of 9</p>
-        <h3 class="hole-name">The Local</h3>
+        <h3 class="hole-name">Cuzzy's</h3>
         <span class="hole-par">PAR 3</span>
         <p class="hole-pour-label">The Pour</p>
-        <ul class="hole-pour-list">
-          <li>Irish coffee</li>
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+          <li>Castle Danger Cream Ale 5.5% ABV</li>
+          <li>Blue Moon 5.4% ABV</li>
+          <li>Bell's Evlipse 5.8% or 6.3% ABV</li>
         </ul>
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
+          <li>No cocktail list</li>
+          <li>Highly recommend ordering</li>
+          <li>A beer *gasp*</li>
+        </ul>
+      </div>
+        </div>
+
         <div class="hole-links">
-          <a href="https://thelocalminneapolis.com/beverage-menu/" class="placeholder-link">The Local Beverages</a>
+          <a href="https://cuzzys.com/beer-list/" class="placeholder-link"> Cuzzy's Beer List</a>
         </div>
       </div>
     </div>
@@ -543,25 +615,41 @@
 </section>
 
 <!-- ============================================================
-     HOLE 9 - Brit's Pub
+     HOLE 9 - Rabbit Hole
      ============================================================ -->
 <section id="hole-9" class="hole-section">
   <div class="container">
     <div class="hole-card reveal">
       <div class="hole-photo">
         <div class="hole-photo-num">09</div>
-        <img src="images/hole9.jpg" alt="Brit's Pub" loading="lazy">
+        <img src="images/hole1.jpg" alt="Rabbit Hole" loading="lazy">
       </div>
       <div class="hole-body">
         <p class="hole-eyebrow">Hole 9 of 9</p>
-        <h3 class="hole-name">Brit's Pub</h3>
+        <h3 class="hole-name">Rabbit Hole</h3>
         <span class="hole-par">PAR 4</span>
         <p class="hole-pour-label">The Pour</p>
-        <ul class="hole-pour-list">
-          <li>Your choice - shots added as needed</li>
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+          <li>Rabbit Hole Weiss 5.1% ABV</li>
+          <li>Beach Bum 4.2% ABV</li>
+          <li>Cane Fighter 6.3% ABV</li>
         </ul>
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
+          <li>Rabbit Hole Mule</li>
+          <li>Rabbit Hole Paloma</li>
+          <li>Rabbit Hole Old Fashioned</li>
+        </ul>
+      </div>
+        </div>
+
         <div class="hole-links">
-          <a href="https://britspub.com/minneapolis-brit-s-pub-drink-menu" class="placeholder-link">Brit's Pub Drink Menu</a>
+          <a href="https://www.therabbitholemn.com/menu" class="placeholder-link"> Rabbit Hole Menu</a>
         </div>
       </div>
     </div>
@@ -569,16 +657,16 @@
 </section>
 
 <!-- ============================================================
-     SCORECARD
+     SCORECARD  (rows rendered dynamically from TEAMS in script.js)
      ============================================================ -->
 <section id="scorecard" class="section-dark">
   <div class="container">
     <p class="eyebrow reveal">Play Live</p>
     <h2 class="section-title reveal">The Scorecard</h2>
-    <p class="section-sub reveal">Enter each team's strokes as they finish a hole. Totals update automatically, and a couple of caddie secrets unlock as you go. Scores save on this device - no login, no signal needed.</p>
+    <p class="section-sub reveal">Enter each team's strokes as they finish a hole, and tag each drink as a beer, a liquor pour, or your one dealer's choice — 4 beers, 4 liquor, 1 dealer's choice, no more. Totals update automatically, a couple of caddie secrets unlock as you go, and scores sync live across every phone watching this page.</p>
 
     <div class="scorecard-note reveal">
-      Low score wins. Strongest liver survives.
+      Low score wins. Strongest liver survives. · 🍺 Beer · 🥃 Liquor · 🎲 Dealer's Choice
     </div>
 
     <div id="scorecard-gate" class="scorecard-gate is-locked">
@@ -605,235 +693,43 @@
           </div>
         </div>
         <p class="countdown-footnote">Scores unlock August 29, 2026 · 2:00 PM CT</p>
+        <button type="button" id="early-access-btn" class="btn-reset btn-early-access">Have an early-access code?</button>
       </div>
 
       <!-- Actual scorecard, hidden until the gate above unlocks -->
       <div id="scorecard-content">
-    <div class="scorecard-scroll">
-      <table class="scorecard">
-        <thead>
-          <tr>
-            <th>Player</th>
-            <th>H1</th><th>H2</th><th>H3</th><th>H4</th>
-            <th>H5</th><th>H6</th><th>H7</th><th>H8</th><th>H9</th>
-            <th>Total</th>
-          </tr>
-          <tr class="par-row">
-            <td>Par</td>
-            <td>4</td><td>3</td><td>5</td><td>3</td>
-            <td>5</td><td>3</td><td>4</td><td>3</td><td>4</td>
-            <td>34</td>
-          </tr>
-        </thead>
-        <tbody>
 
-          <tr class="player-row" data-team="team1" data-player="1">
-            <td>Michael</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="player-row" data-team="team1" data-player="2">
-            <td>Ethan</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="team-total-row" data-team="team1">
-            <td>[Insert Team Name Here] Total</td>
-            <td class="team-hole-total" data-hole="1">—</td>
-            <td class="team-hole-total" data-hole="2">—</td>
-            <td class="team-hole-total" data-hole="3">—</td>
-            <td class="team-hole-total" data-hole="4">—</td>
-            <td class="team-hole-total" data-hole="5">—</td>
-            <td class="team-hole-total" data-hole="6">—</td>
-            <td class="team-hole-total" data-hole="7">—</td>
-            <td class="team-hole-total" data-hole="8">—</td>
-            <td class="team-hole-total" data-hole="9">—</td>
-            <td class="total-cell team-total-cell">—</td>
-          </tr>
+        <div class="scorecard-editbar reveal">
+          <span id="edit-status-label" class="edit-status-label">🔒 View only</span>
+          <div class="scorecard-editbar-actions">
+            <button type="button" id="edit-toggle-btn" class="btn-reset">Enable Editing</button>
+            <button type="button" id="reset-scorecard" class="btn-reset" disabled>Reset scorecard</button>
+          </div>
+        </div>
 
-          <tr class="player-row" data-team="team2" data-player="1">
-            <td>Cole</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="player-row" data-team="team2" data-player="2">
-            <td>Hogan</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="team-total-row" data-team="team2">
-            <td>[Insert Team Name Here] Total</td>
-            <td class="team-hole-total" data-hole="1">—</td>
-            <td class="team-hole-total" data-hole="2">—</td>
-            <td class="team-hole-total" data-hole="3">—</td>
-            <td class="team-hole-total" data-hole="4">—</td>
-            <td class="team-hole-total" data-hole="5">—</td>
-            <td class="team-hole-total" data-hole="6">—</td>
-            <td class="team-hole-total" data-hole="7">—</td>
-            <td class="team-hole-total" data-hole="8">—</td>
-            <td class="team-hole-total" data-hole="9">—</td>
-            <td class="total-cell team-total-cell">—</td>
-          </tr>
+        <div class="scorecard-scroll">
+          <table class="scorecard">
+            <thead>
+              <tr>
+                <th>Player</th>
+                <th>H1</th><th>H2</th><th>H3</th><th>H4</th>
+                <th>H5</th><th>H6</th><th>H7</th><th>H8</th><th>H9</th>
+                <th>Total</th>
+              </tr>
+              <tr class="par-row">
+                <td>Par</td>
+                <td>4</td><td>3</td><td>4</td><td>3</td>
+                <td>5</td><td>3</td><td>5</td><td>3</td><td>4</td>
+                <td>34</td>
+              </tr>
+            </thead>
+            <tbody id="scorecard-body"><!-- populated by script.js from TEAMS --></tbody>
+          </table>
+        </div>
 
-          <tr class="player-row" data-team="team3" data-player="1">
-            <td>Alex</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="player-row" data-team="team3" data-player="2">
-            <td>Nolan</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="team-total-row" data-team="team3">
-            <td>[Insert Team Name Here] Total</td>
-            <td class="team-hole-total" data-hole="1">—</td>
-            <td class="team-hole-total" data-hole="2">—</td>
-            <td class="team-hole-total" data-hole="3">—</td>
-            <td class="team-hole-total" data-hole="4">—</td>
-            <td class="team-hole-total" data-hole="5">—</td>
-            <td class="team-hole-total" data-hole="6">—</td>
-            <td class="team-hole-total" data-hole="7">—</td>
-            <td class="team-hole-total" data-hole="8">—</td>
-            <td class="team-hole-total" data-hole="9">—</td>
-            <td class="total-cell team-total-cell">—</td>
-          </tr>
-
-          <tr class="player-row" data-team="team4" data-player="1">
-            <td>Colton</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="player-row" data-team="team4" data-player="2">
-            <td>Cullen</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="team-total-row" data-team="team4">
-            <td>[Insert Team Name Here] Total</td>
-            <td class="team-hole-total" data-hole="1">—</td>
-            <td class="team-hole-total" data-hole="2">—</td>
-            <td class="team-hole-total" data-hole="3">—</td>
-            <td class="team-hole-total" data-hole="4">—</td>
-            <td class="team-hole-total" data-hole="5">—</td>
-            <td class="team-hole-total" data-hole="6">—</td>
-            <td class="team-hole-total" data-hole="7">—</td>
-            <td class="team-hole-total" data-hole="8">—</td>
-            <td class="team-hole-total" data-hole="9">—</td>
-            <td class="total-cell team-total-cell">—</td>
-          </tr>
-
-          <tr class="player-row" data-team="team5" data-player="1">
-            <td>Eric</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="player-row" data-team="team5" data-player="2">
-            <td>Riley</td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="1"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="2"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="3"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="4"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="5"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="6"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="7"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="8"></td>
-            <td class="score-cell"><input type="number" min="0" max="20" data-hole="9"></td>
-            <td class="total-cell">—</td>
-          </tr>
-          <tr class="team-total-row" data-team="team5">
-            <td>[Insert Team Name Here] Total</td>
-            <td class="team-hole-total" data-hole="1">—</td>
-            <td class="team-hole-total" data-hole="2">—</td>
-            <td class="team-hole-total" data-hole="3">—</td>
-            <td class="team-hole-total" data-hole="4">—</td>
-            <td class="team-hole-total" data-hole="5">—</td>
-            <td class="team-hole-total" data-hole="6">—</td>
-            <td class="team-hole-total" data-hole="7">—</td>
-            <td class="team-hole-total" data-hole="8">—</td>
-            <td class="team-hole-total" data-hole="9">—</td>
-            <td class="total-cell team-total-cell">—</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="scorecard-actions reveal">
-      <button id="reset-scorecard" class="btn-reset">Reset scorecard</button>
-      <span class="autosave-note">Scores autosave to this browser as you type.</span>
-    </div>
+        <div class="scorecard-actions reveal">
+          <span class="autosave-note">Scores sync live to everyone viewing this page. Editing requires a password; viewing doesn't.</span>
+        </div>
 
       </div><!-- /#scorecard-content -->
     </div><!-- /#scorecard-gate -->
@@ -857,7 +753,7 @@
     <table class="penalty-table reveal">
       <tbody>
         <tr>
-          <td class="penalty-desc">Spill your own drink - restart the hole</td>
+          <td class="penalty-desc">Spill your own drink — restart the hole</td>
           <td class="penalty-strokes">+1</td>
         </tr>
         <tr>
@@ -865,7 +761,7 @@
           <td class="penalty-strokes">+2</td>
         </tr>
         <tr>
-          <td class="penalty-desc">Spill another golfer's drink - you also buy them a replacement</td>
+          <td class="penalty-desc">Spill another golfer's drink — you also buy them a replacement</td>
           <td class="penalty-strokes">+2</td>
         </tr>
         <tr>
@@ -883,6 +779,14 @@
         <tr>
           <td class="penalty-desc">Cheat, argue, or fight with another golfer</td>
           <td class="penalty-strokes">+10</td>
+        </tr>
+        <tr>
+          <td class="penalty-desc">A girlfriend, ex-girlfriend, sneaky link, sister, mom, aunt, grandma, or any other tag-along shows up or meets the group partway through</td>
+          <td class="penalty-strokes">+50</td>
+        </tr>
+        <tr class="penalty-dq">
+          <td class="penalty-desc">In bed by 10:00 PM</td>
+          <td class="penalty-strokes penalty-dq-tag">DQ</td>
         </tr>
       </tbody>
     </table>
@@ -903,7 +807,7 @@
     <h2 class="closing-title reveal">See You On the Course</h2>
     <p class="closing-sub reveal">Play honest. Drink responsibly. Have fun.<br>Low score wins. Strongest liver survives.</p>
     <div class="closing-links reveal">
-      <a href="#" class="placeholder-link"> Back To Top </a>
+      <a href="#top" class="placeholder-link"> Back To Top </a>
     </div>
   </div>
 </section>
@@ -912,7 +816,8 @@
   Puta Madres Pub Golf · 2026 Season
 </footer>
 
-
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

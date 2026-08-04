@@ -1,56 +1,81 @@
 # Puta Madres Pub Golf — 2026
 
-A single-scroll site built from the pub golf slideshow, with a sticky jump-to nav and a live, phone-friendly scorecard.
+A single-scroll site with a sticky jump-to nav and a live, password-gated, cross-device scorecard.
 
 ## What's in here
 
 ```
 index.html   — all page content/sections
-style.css    — all styling (colors, fonts, layout, animations)
-script.js    — nav highlighting, scroll reveals, scorecard logic
-images/      — every photo used on the site, already resized for web
+style.css    — all styling
+script.js    — team data, rendering, scorecard logic, countdown gate
+images/      — every photo used on the site
 ```
 
-No build step, no dependencies. It's plain HTML/CSS/JS.
+## Route (reversed)
 
-## Hosting it on GitHub Pages
+The crawl now starts at Brit's Pub and ends at Rabbit Hole. Both hazards stayed
+attached to the same bars, they just moved to new hole numbers:
+- Hole 3 = Mackenzie Pub (Irish Car Bomb secret, unlocks after Hole 2 is scored)
+- Hole 6 = Killens (Water Hazard secret, unlocks after Hole 5 is scored)
 
-1. Create a new repo on GitHub (e.g. `puta-madres-pub-golf`).
-2. Add these four items (`index.html`, `style.css`, `script.js`, `images/`) to the root of the repo — don't put them in a subfolder, or GitHub Pages won't find `index.html` automatically.
-3. Push to GitHub.
-4. In the repo: **Settings → Pages → Build and deployment → Source: Deploy from a branch**. Pick `main` (or whatever your default branch is) and `/ (root)`, then Save.
-5. GitHub gives you a URL like `https://yourusername.github.io/puta-madres-pub-golf/` within a minute or two.
+The route map image and Google Maps link are both updated to the reversed route.
 
-If you'd rather use a custom domain, GitHub's Pages settings has a field for that — just add a `CNAME` file or type it into the settings box, and set up the DNS records GitHub shows you.
+## Teams — now data-driven
 
-## Placeholders you still need to fill in
+Open `script.js` and edit the `TEAMS` array at the top. Move a player to a
+different team, rename a team, or reorder teams — both the roster cards and
+the scorecard rows regenerate from that one array automatically.
 
-Every one of these shows up on the live site as a dashed gold button labeled **"Add link"** so they're easy to spot. Open `index.html`, search for `href="#"`, and swap in the real URL:
+## The scorecard
 
-- **Route section** — Google Maps link for the walking route
-- **Each of the 9 hole cards** — venue website or Instagram link (Rabbit Hole, Cuzzy's, Bricksworth, Killens, Smorgies, O'Donovan's, Mackenzie Pub, The Local, Brit's Pub)
-- **Closing section** — photo gallery / upload link for after the event
+- Visible to everyone once it unlocks (countdown to Aug 29, 2026, 2:00 PM CT) —
+  no password needed just to view it.
+- **Editing** (entering scores or drink types) requires a password:
+  `putagolf26` — change `EDIT_PASSWORD` in `script.js`. Once someone enters it
+  correctly on a device, that device stays unlocked for editing on future visits.
+- **Testing before tee time**: click "Have an early-access code?" in the locked
+  countdown box and enter `caddie` (change `TEST_BYPASS_PASSWORD` in `script.js`)
+  to preview the live scorecard early. This only bypasses the countdown for
+  that browser tab session — it doesn't touch the real countdown for anyone else.
+- Each player gets a strokes input per hole plus three drink-type chips
+  (🍺 beer / 🥃 liquor / 🎲 dealer's choice). The chips gate at 4 beer, 4 liquor,
+  1 dealer's choice per player — once a category is maxed, its chip disables
+  until you free up a slot by switching another hole's choice.
+- Totals, team totals, and the current leader update live.
 
-Just replace the `#` inside the matching `<a href="#" class="placeholder-link">` tag with your real link, e.g.:
+### Cross-device sync (optional — Firebase)
 
-```html
-<a href="https://maps.app.goo.gl/yourlink" class="placeholder-link">
-```
+By default the scorecard only saves to whichever device is editing it
+(localStorage). To make scores sync live across every phone watching the page:
 
-## The live scorecard
+1. Create a free project at https://console.firebase.google.com
+2. Add a Realtime Database, and start it in **test mode** (open read/write) —
+   good enough for a private one-day event.
+3. In `script.js`, find `FIREBASE_CONFIG` near the top and paste in your
+   project's config values (apiKey, authDomain, databaseURL, projectId).
 
-- The rest of the site (holes, teams, rules, route) is visible to everyone right away — only the scorecard table itself is gated.
-- The scorecard unlocks automatically at **August 29, 2026 · 2:00 PM Central**, showing a live days/hours/minutes/seconds countdown until then. It's calculated from a fixed UTC offset, so it fires at the right moment regardless of a visitor's device timezone.
-- This is a friendly gate, not real security — anyone who opens the page source could find the markup underneath. Good for "no peeking at scores before tee time," not for anything that needs to stay actually private.
-- 5 teams × 9 holes, all editable strokes-per-hole inputs.
-- Totals and the current leader (lowest total) update live as scores are entered.
-- Scores save automatically to whoever's browser/phone is entering them (via `localStorage`) — no login, no server, no signal needed once the page is loaded. Note this means each device keeps its own copy; it's built for one caddie/scorekeeper's phone to run the card, not for everyone's phones to sync live.
-- Two caddie secrets are hidden until the right moment:
-  - Entering any team's score for **Hole 3** unlocks the Hole 4 water-hazard warning.
-  - Entering any team's score for **Hole 6** unlocks the Hole 7 Irish Car Bomb warning.
-- **Reset scorecard** clears all scores and re-locks both secrets — good to hit once the season's over, or before a rerun.
+That's it — no other code changes needed. Until you fill that in, the site
+works exactly the same, just without cross-device sync.
 
-## Notes on content
+## Placeholders still open
 
-- Hole 6 (O'Donovan's) and Hole 7 (Mackenzie Pub) numbering follows the "HOLE X OF 9" footer text from the original slides, per your call.
-- The two "CADDIE ONLY — do not display" notes from the speaker notes are wired into the scorecard secrets above rather than shown as static text.
+- **Closing section** — the "Back To Top" link works as-is (an empty `#`
+  anchor jumps to page top by default).
+- Every hole's venue link and the Google Maps route link are already filled in.
+
+## Hosting on GitHub Pages
+
+1. Push `index.html`, `style.css`, `script.js`, and `images/` to the root of
+   a repo (not a subfolder).
+2. In the repo: **Settings → Pages → Build and deployment → Source: GitHub
+   Actions** (a workflow is included at `.github/workflows/deploy.yml`).
+3. Push to `main` and the site deploys automatically.
+
+## Notes
+
+- The countdown gate and password system are front-end conveniences, not real
+  security — anyone who views source can read the passwords. They're meant to
+  stop casual bumps and keep spoilers off the page before tee time, not to
+  protect anything sensitive.
+- Reset scorecard clears all scores/drink picks for everyone (if Firebase is
+  configured) and re-locks the two caddie secrets.
