@@ -801,14 +801,13 @@ table.scorecard thead th{
   background:rgba(0,0,0,.15);
 }
 table.scorecard td:first-child, table.scorecard th:first-child{
-  text-align:left;
   position:sticky;
   left:0;
+  z-index:2;
   background:var(--green-deep);
-  min-width:170px;
   font-weight:600;
 }
-table.scorecard thead th:first-child{ background:#163827; }
+table.scorecard thead th:first-child{ z-index:3; background:#163827; }
 table.scorecard input[type="number"]{
   width:44px;
   text-align:center;
@@ -889,6 +888,9 @@ table.scorecard input[type="number"]:disabled{ opacity:.55; cursor:not-allowed; 
 table.scorecard td.total-cell{ font-weight:800; color:var(--gold-soft); font-size:1rem; }
 table.scorecard tr.leader td{ background:rgba(233,164,0,.1); }
 table.scorecard tr.leader td:first-child{ background:rgba(233,164,0,.18); }
+table.scorecard tr.par-row td:first-child{ background:#40542A; }
+table.scorecard tr.team-total-row td:first-child{ background:#264C3C; }
+table.scorecard tr.team-total-row.leader td:first-child{ background:#3A5221; }
 .leader-tag{ font-size:.62rem; background:var(--gold); color:var(--green-deep); padding:1px 6px; border-radius:4px; margin-left:.4rem; letter-spacing:.04em; }
 
 .scorecard-actions{
