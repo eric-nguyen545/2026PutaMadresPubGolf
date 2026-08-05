@@ -743,12 +743,6 @@ section{ padding:5.5rem 0; position:relative; }
   margin-top:.5rem;
   transition: all .4s var(--ease);
 }
-.secret-box.locked{
-  background:rgba(27,42,34,.04);
-  border:1px dashed rgba(27,42,34,.2);
-  color:var(--stone);
-  display:flex; align-items:center; gap:.6rem;
-}
 .secret-box.unlocked{
   background:#FCEFD2;
   border:1px solid var(--gold);
@@ -876,7 +870,21 @@ table.scorecard input[type="number"]:disabled{ opacity:.55; cursor:not-allowed; 
   font-weight:700;
   color:rgba(255,255,255,.75);
 }
+.sync-status-label{
+  font-size:.75rem;
+  color:rgba(255,255,255,.5);
+  margin-right:auto;
+  margin-left:.75rem;
+}
 .scorecard-editbar-actions{ display:flex; gap:.6rem; }
+
+table.scorecard th.canned-col{
+  background:rgba(233,164,0,.14);
+  color:var(--gold-soft);
+}
+table.scorecard td.canned-col{
+  background:rgba(233,164,0,.07);
+}
 
 .btn-early-access{
   margin-top:1.5rem;

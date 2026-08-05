@@ -28,8 +28,117 @@ const TEAMS = [
   ]},
 ];
 
-const HOLE_COUNT = 9;
-const PAR = { 1:4, 2:3, 3:4, 4:3, 5:5, 6:3, 7:5, 8:3, 9:4 };
+// ---------------- Hole course (single source of truth) ----------------
+// Move a hole to a new position, edit its drinks/links/par, or add a new
+// hazard secret here — the hole sections AND the scorecard header/par row
+// regenerate from this one array automatically. `unlockAfterHole` reveals
+// a hazard's secret once every golfer has a score in for that earlier hole.
+// `turnAfter: true` drops the Graze Food Hall "turn" section in right after
+// that hole. `canned: true` flags a hole as canned-drinks-only on the
+// scorecard header.
+const HOLES = [
+  {
+    num: 1,
+    name: 'Brit\'s Pub',
+    par: 4,
+    img: 'hole9.jpg',
+    link: 'https://britspub.com/minneapolis-brit-s-pub-drink-menu',
+    linkLabel: 'Brit\'s Pub Drink Menu',
+    beer: ['Guinness Stout 4.2% ABV', 'Brit\'s ESB 6% ABV', 'Old Speckled Hen 5% ABV'],
+    liquor: ['Brit\'s Gin & Tonic with Beefeater', 'Brit\'s Bootleg', 'The Brit\'s Ginger with Jameson'],
+  },
+  {
+    num: 2,
+    name: 'The Local',
+    par: 3,
+    img: 'hole8.jpg',
+    link: 'https://thelocalminneapolis.com/beverage-menu/',
+    linkLabel: 'The Local Beverages',
+    beer: ['Guinness Stout 4.2% ABV', 'Smithwicks Red Ale 4.5% ABV', 'Harp Lager 5% ABV'],
+    liquor: ['Ginger Locks', 'Irish Coffee', 'Local\'s Old Fashioned On Tap'],
+  },
+  {
+    num: 3,
+    name: 'Mackenzie Pub',
+    par: 4,
+    img: 'hole7.jpg',
+    link: 'https://mackenziepub.com/minneapolis-theatre-district-mackenzie-pub-drink-menu',
+    linkLabel: 'Mackenzie Pub Drink List',
+    beer: ['805 Cerveza 4.5% ABV', 'This Beer Is NIIICE! 4.5% ABV', 'Deer Brand 4.7% ABV'],
+    liquor: ['Blueberry Borealis 5.8% ABV', 'Magners Original Irish Cider 4.5% ABV', 'Mango Habanero 6% ABV'],
+    note: 'Straight from the can - it cannot be poured into a glass. Canned drinks only at this hole.',
+    secret: { id: 'secret-hole-3', titleFull: '💣 Caddie Secret - Bunker Shot', text: 'Every team owes one Irish Car Bomb here before moving on. Skip the drop shot and it\'s a 2-stroke penalty.' },
+    unlockAfterHole: 2,
+    canned: true,
+  },
+  {
+    num: 4,
+    name: 'O\'Donovan\'s',
+    par: 3,
+    img: 'hole6.jpg',
+    link: 'https://odonovans.com/',
+    linkLabel: 'O\'Donovan\'s website',
+    beer: ['Smithwicks Red Ale 4.5% ABV', 'Finnegans Irish Amber 4.8% ABV', 'Guinesss 4.25 ABV'],
+    liquor: ['O\'Donovan\'s Bloody', 'O\'Donovan\'s Red Rose', 'Irish Blueberry Black Tea'],
+  },
+  {
+    num: 5,
+    name: 'Smorgies',
+    par: 5,
+    img: 'hole5.jpg',
+    link: 'https://www.smorgiesbar.com/menu',
+    linkLabel: 'Smorgies Menu',
+    beer: ['Tap List', 'Is Unknown', 'But There are Canned Drinks'],
+    liquor: ['Smorgies Hibiscus Spritz', 'Cucumber Cooler', 'Chelsea\'s Red Sangria'],
+    bonus: { title: 'Earning the Par 5', text: 'To make this hole a true par five, each golfer must also take two shots.' },
+    turnAfter: true,
+  },
+  {
+    num: 6,
+    name: 'Killens',
+    par: 3,
+    img: 'hole4.jpg',
+    link: 'https://www.instagram.com/killens_irish_pub/?hl=en',
+    linkLabel: 'Killens IG',
+    beer: ['Guinness 4.2% ABV', 'Harp 4.5% ABV', 'Smithwick\'s Red Lager 4.8% ABV'],
+    liquor: ['House Old Fashioned', 'Killen\'s House Margarita', 'House Manhattan'],
+    secret: { id: 'secret-hole-6', titleFull: '🚱 Caddie Secret - Water Hazard', text: 'Killens is a certified water hazard. No peeing. Any golfer caught peeing takes a 2-stroke penalty.' },
+    unlockAfterHole: 5,
+  },
+  {
+    num: 7,
+    name: 'Bricksworth',
+    par: 5,
+    img: 'hole3.jpg',
+    link: 'https://www.bricksworthbeer.co/north-loop-drinks',
+    linkLabel: 'Bricksworth Beer Co. Beer List',
+    beer: ['Couplabeers 7% ABV', 'Naz Reid 7.5% ABV', 'Terms & Conditions 6.9% ABV'],
+    liquor: ['Bricksworth Bootlegger', 'Space Cadet', 'Slushy Cocktails - Grape Ape or Ube Pina Colada'],
+  },
+  {
+    num: 8,
+    name: 'Cuzzy\'s',
+    par: 3,
+    img: 'hole2.jpg',
+    link: 'https://cuzzys.com/beer-list/',
+    linkLabel: 'Cuzzy\'s Beer List',
+    beer: ['Castle Danger Cream Ale 5.5% ABV', 'Blue Moon 5.4% ABV', 'Bell\'s Evlipse 5.8% or 6.3% ABV'],
+    liquor: ['No cocktail list', 'Highly recommend ordering', 'A beer *gasp*'],
+  },
+  {
+    num: 9,
+    name: 'Rabbit Hole',
+    par: 4,
+    img: 'hole1.jpg',
+    link: 'https://www.therabbitholemn.com/menu',
+    linkLabel: 'Rabbit Hole Menu',
+    beer: ['Rabbit Hole Weiss 5.1% ABV', 'Beach Bum 4.2% ABV', 'Cane Fighter 6.3% ABV'],
+    liquor: ['Rabbit Hole Mule', 'Rabbit Hole Paloma', 'Rabbit Hole Old Fashioned'],
+  },
+];
+
+const HOLE_COUNT = HOLES.length;
+const PAR = Object.fromEntries(HOLES.map(h => [h.num, h.par]));
 const DRINK_MAX = { beer: 4, liquor: 4, dealer: 1 };
 const DRINK_ICON = { beer: '🍺', liquor: '🥃', dealer: '🎲' };
 
@@ -39,11 +148,7 @@ const DRINK_ICON = { beer: '🍺', liquor: '🥃', dealer: '🎲' };
 const EDIT_PASSWORD = 'putagolf26';        // required to edit the live scorecard
 const TEST_BYPASS_PASSWORD = 'caddie';     // unlocks the scorecard early, for testing
 
-// ---------------- Firebase (optional — enables cross-device sync) ----------------
-// Create a free project at https://console.firebase.google.com, enable
-// "Realtime Database" (start in test mode so reads/writes are open), and
-// paste your config below. Until you do, the scorecard still works fine —
-// it just stays local to each device instead of syncing live.
+// ---------------- Firebase (enables cross-device sync) ----------------
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyAn0kqVeW2SlrDtwJ7cYVgC7LJA34ANr5k",
   authDomain: "putamadres-pub-golf.firebaseapp.com",
@@ -53,14 +158,38 @@ const FIREBASE_CONFIG = {
 const FIREBASE_PATH = 'putaMadresScorecard2026';
 
 let fbRef = null;
+let fbApp = null;
 try {
   if (window.firebase && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY') {
-    firebase.initializeApp(FIREBASE_CONFIG);
+    fbApp = firebase.initializeApp(FIREBASE_CONFIG);
     fbRef = firebase.database().ref(FIREBASE_PATH);
   }
 } catch (e) {
   console.warn('Firebase not configured — scorecard will stay local to this device.', e);
   fbRef = null;
+}
+
+// ---------------- Sync status indicator ----------------
+function initSyncStatus() {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+
+  if (!fbRef) {
+    el.textContent = '⚪ Local only (this device)';
+    el.title = 'Firebase isn\'t configured — scores stay on this device only.';
+    return;
+  }
+
+  const connectedRef = firebase.database().ref('.info/connected');
+  connectedRef.on('value', (snap) => {
+    if (snap.val() === true) {
+      el.textContent = '🟢 Live sync';
+      el.title = 'Connected — scores sync across every device viewing this page.';
+    } else {
+      el.textContent = '🟡 Reconnecting…';
+      el.title = 'Not connected right now — edits save locally and will sync once back online.';
+    }
+  });
 }
 
 // ---------------- Scorecard countdown gate ----------------
@@ -136,7 +265,7 @@ function initEarlyAccess() {
   });
 }
 
-// ---------------- Roster + scorecard rendering ----------------
+// ---------------- Roster rendering ----------------
 function renderRoster() {
   const grid = document.getElementById('roster-grid');
   if (!grid) return;
@@ -165,6 +294,133 @@ function renderRoster() {
   }).join('\n');
 }
 
+// ---------------- Hole section rendering ----------------
+function drinkSlots(items) {
+  const padded = items.concat([null, null, null]).slice(0, 3);
+  return padded.map(item =>
+    item ? `<li>${item}</li>` : `<li class="empty">—</li>`
+  ).join('\n');
+}
+
+function holeSectionHtml(hole, position) {
+  const isEven = position % 2 === 0;
+  const sectionBg = isEven ? ' style="background:var(--white)"' : '';
+  const cardFlip = isEven ? ' flip' : '';
+  const numStr = String(hole.num).padStart(2, '0');
+
+  const noteHtml = hole.note ? `        <p class="hole-note">${hole.note}</p>\n` : '';
+
+  const bonusHtml = hole.bonus ? `        <div class="hole-bonus">
+          <strong>${hole.bonus.title}</strong>
+          ${hole.bonus.text}
+        </div>\n` : '';
+
+  const secretHtml = hole.secret ? `
+          <div id="${hole.secret.id}" class="secret-box unlocked">
+            <strong>${hole.secret.titleFull}</strong>
+            ${hole.secret.text}
+          </div>\n` : '';
+
+  return `<!-- ============================================================
+     HOLE ${hole.num} - ${hole.name}
+     ============================================================ -->
+<section id="hole-${hole.num}" class="hole-section"${sectionBg}>
+  <div class="container">
+    <div class="hole-card${cardFlip} reveal">
+      <div class="hole-photo">
+        <div class="hole-photo-num">${numStr}</div>
+        <img src="images/${hole.img}" alt="${hole.name}" loading="lazy">
+      </div>
+      <div class="hole-body">
+        <p class="hole-eyebrow">Hole ${hole.num} of ${HOLE_COUNT}${hole.canned ? ' · 🥫 Canned drinks only' : ''}</p>
+        <h3 class="hole-name">${hole.name}</h3>
+        <span class="hole-par">PAR ${hole.par}</span>
+        <p class="hole-pour-label">The Pour</p>
+        <div class="hole-drinks">
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🍺 Beer</p>
+        <ul class="hole-drinks-slots">
+${drinkSlots(hole.beer)}
+        </ul>
+      </div>
+      <div class="hole-drinks-col">
+        <p class="hole-drinks-label">🥃 Liquor</p>
+        <ul class="hole-drinks-slots">
+${drinkSlots(hole.liquor)}
+        </ul>
+      </div>
+        </div>
+${noteHtml}${bonusHtml}${secretHtml}
+        <div class="hole-links">
+          <a href="${hole.link}" class="placeholder-link"> ${hole.linkLabel}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>`;
+}
+
+function turnSectionHtml(nextHole) {
+  const nextText = nextHole ? `before teeing off on Hole ${nextHole.num}` : 'before the back nine';
+  return `<!-- ============================================================
+     THE TURN
+     ============================================================ -->
+<section id="turn" class="section-dark">
+  <div class="container">
+    <p class="eyebrow reveal">The Turn</p>
+    <h2 class="section-title reveal">Graze Food Hall</h2>
+    <p class="section-sub reveal">Food stop - refuel between the front and back nine ${nextText}.</p>
+    <div class="turn-photos">
+      <img class="reveal-img" src="images/turn1.jpg" alt="Graze Food Hall spread" loading="lazy">
+      <img class="reveal-img reveal-delay-1" src="images/turn2.jpg" alt="Graze Food Hall spread" loading="lazy">
+      <img class="reveal-img reveal-delay-2" src="images/turn3.jpg" alt="Graze Food Hall spread" loading="lazy">
+    </div>
+    <div class="section-footer-tag on-dark">
+      <span>Puta Madres Pub Golf · 2026</span>
+      <span>The Turn</span>
+    </div>
+  </div>
+</section>`;
+}
+
+function renderHoles() {
+  const container = document.getElementById('holes-container');
+  if (!container) return;
+
+  const sorted = [...HOLES].sort((a, b) => a.num - b.num);
+  const blocks = sorted.map((hole, i) => {
+    let html = holeSectionHtml(hole, i + 1);
+    if (hole.turnAfter) {
+      html += '\n\n' + turnSectionHtml(sorted[i + 1] || null);
+    }
+    return html;
+  });
+
+  container.innerHTML = blocks.join('\n\n');
+}
+
+// ---------------- Scorecard header + par row rendering ----------------
+function renderScorecardHead() {
+  const headerRow = document.getElementById('scorecard-hole-header');
+  const parRow = document.getElementById('scorecard-par-row');
+  if (!headerRow || !parRow) return;
+
+  const sorted = [...HOLES].sort((a, b) => a.num - b.num);
+  let parTotal = 0;
+
+  const headerCells = sorted.map(h =>
+    `<th${h.canned ? ' class="canned-col" title="Canned drinks only at this hole"' : ''}>H${h.num}${h.canned ? ' 🥫' : ''}</th>`
+  ).join('');
+  headerRow.innerHTML = `<th>Player</th>${headerCells}<th>Total</th>`;
+
+  const parCells = sorted.map(h => {
+    parTotal += h.par;
+    return `<td${h.canned ? ' class="canned-col"' : ''}>${h.par}</td>`;
+  }).join('');
+  parRow.innerHTML = `<td>Par</td>${parCells}<td>${parTotal}</td>`;
+}
+
+// ---------------- Scorecard rows rendering ----------------
 function drinkTypeGroup(team, player, hole) {
   const types = ['beer', 'liquor', 'dealer'];
   const chips = types.map(t =>
@@ -213,6 +469,8 @@ function renderScorecard() {
 const STORAGE_KEY = 'putaMadresScorecard2026';
 let scorecardState = {};
 let editUnlocked = false;
+let lastCompletedSetKey = '';
+const pendingPushes = {};
 
 function loadLocalState() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
@@ -222,10 +480,25 @@ function saveLocalState(state) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-function pushState(state) {
-  saveLocalState(state);
+// Pushes only the single team/hole path that changed (not the whole
+// scorecard), and debounces rapid typing, so two phones editing different
+// teams at the same moment can't clobber each other's writes.
+function pushEntry(key, hole, entry) {
+  saveLocalState(scorecardState);
+  if (!fbRef) return;
+
+  const pendingKey = `${key}/${hole}`;
+  clearTimeout(pendingPushes[pendingKey]);
+  pendingPushes[pendingKey] = setTimeout(() => {
+    fbRef.child(key).child(hole).set(entry)
+      .catch(err => console.warn('Firebase sync failed, saved locally only.', err));
+  }, 350);
+}
+
+function pushFullReset() {
+  saveLocalState(scorecardState);
   if (fbRef) {
-    fbRef.set(state).catch(err => console.warn('Firebase sync failed, saved locally only.', err));
+    fbRef.set({}).catch(err => console.warn('Firebase reset failed, saved locally only.', err));
   }
 }
 
@@ -245,17 +518,30 @@ function unlockSecret(secretId) {
   if (box) box.classList.add('show');
 }
 
-function checkSecretTriggers(state) {
-  // Entering a score for the hole right before a hazard hole reveals its secret.
-  // Hole 3 (Mackenzie Pub — Irish Car Bomb) unlocks after Hole 2 is scored.
-  // Hole 6 (Killens — Water Hazard) unlocks after Hole 5 is scored.
-  const triggers = { 2: 'secret-hole-3', 5: 'secret-hole-6' };
-  Object.entries(triggers).forEach(([holeNum, secretId]) => {
-    const anyFilled = Object.values(state).some(scores => {
-      const v = parseInt(scores && scores[holeNum] && scores[holeNum].score, 10);
-      return !isNaN(v);
+function totalGolferCount() {
+  return TEAMS.reduce((n, t) => n + t.players.length, 0);
+}
+
+function isHoleFullyEntered(hole) {
+  // True once every golfer in the field has a score entered for this hole.
+  let count = 0;
+  TEAMS.forEach(team => {
+    team.players.forEach((_, idx) => {
+      const key = `${team.id}-p${idx + 1}`;
+      const entry = scorecardState[key] && scorecardState[key][hole];
+      if (entry && entry.score !== undefined && entry.score !== null && entry.score !== '') count++;
     });
-    if (anyFilled) unlockSecret(secretId);
+  });
+  return count === totalGolferCount();
+}
+
+function checkSecretTriggers() {
+  // A hazard's secret only shows once every golfer has finished the hole
+  // right before it — not the moment the first score comes in.
+  HOLES.forEach(hole => {
+    if (hole.secret && isHoleFullyEntered(hole.unlockAfterHole)) {
+      unlockSecret(hole.secret.id);
+    }
   });
 }
 
@@ -356,14 +642,20 @@ function updateScorecard() {
   }
 
   // Lowest total climbs to the top of the card; teams with no scores yet
-  // stay put at the bottom in their original order.
-  const sortedTeamIds = teamResults
-    .map((t, i) => ({ id: t.row.dataset.team, sortKey: t.anyFilled ? t.grand : Infinity, i }))
-    .sort((a, b) => a.sortKey - b.sortKey || a.i - b.i)
-    .map(t => t.id);
-  reorderTeamRows(sortedTeamIds);
+  // stay put at the bottom in their original order. Reordering only fires
+  // when a whole hole has just been completed by every golfer, so rows
+  // don't jump around mid-entry while people are still typing.
+  const completedSetKey = HOLES.map(h => isHoleFullyEntered(h.num) ? '1' : '0').join('');
+  if (completedSetKey !== lastCompletedSetKey) {
+    lastCompletedSetKey = completedSetKey;
+    const sortedTeamIds = teamResults
+      .map((t, i) => ({ id: t.row.dataset.team, sortKey: t.anyFilled ? t.grand : Infinity, i }))
+      .sort((a, b) => a.sortKey - b.sortKey || a.i - b.i)
+      .map(t => t.id);
+    reorderTeamRows(sortedTeamIds);
+  }
 
-  checkSecretTriggers(scorecardState);
+  checkSecretTriggers();
 }
 
 function setEditMode(enabled) {
@@ -402,7 +694,7 @@ function initScorecardInteractivity() {
         scorecardState[key][hole].score = v;
       }
 
-      pushState(scorecardState);
+      pushEntry(key, hole, scorecardState[key][hole]);
       updateScorecard();
     });
   });
@@ -427,7 +719,7 @@ function initScorecardInteractivity() {
         scorecardState[key][hole].type = type;
       }
 
-      pushState(scorecardState);
+      pushEntry(key, hole, scorecardState[key][hole]);
       updateScorecard();
     });
   });
@@ -459,7 +751,8 @@ function initScorecardInteractivity() {
       const confirmed = window.confirm('Clear all scores and re-lock the caddie secrets for everyone? This cannot be undone.');
       if (!confirmed) return;
       scorecardState = {};
-      pushState(scorecardState);
+      lastCompletedSetKey = '';
+      pushFullReset();
       document.querySelectorAll('.secret-box.unlocked').forEach(box => box.classList.remove('show'));
       updateScorecard();
     });
@@ -493,10 +786,13 @@ function initScorecardData() {
 document.addEventListener('DOMContentLoaded', () => {
 
   renderRoster();
+  renderHoles();
+  renderScorecardHead();
   renderScorecard();
   initScorecardInteractivity();
   initScorecardData();
   initEarlyAccess();
+  initSyncStatus();
 
   if (Date.now() >= REVEAL_TIME || isBypassed()) {
     unlockScorecard();
@@ -505,7 +801,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------------- Scroll reveal ---------------- */
-  const revealEls = document.querySelectorAll('.reveal, .reveal-img');
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -514,7 +809,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
-  revealEls.forEach(el => revealObserver.observe(el));
+  document.querySelectorAll('.reveal, .reveal-img').forEach(el => revealObserver.observe(el));
 
   /* ---------------- Nav active-section highlight ---------------- */
   const navLinks = Array.from(document.querySelectorAll('.nav-link[data-target]'));
