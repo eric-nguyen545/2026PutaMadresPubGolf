@@ -85,7 +85,7 @@ const HOLES = [
     {
     num: 5,
     name: 'Bassett Hound',
-    par: 3,
+    par: 4,
     img: 'hole6.jpg',
     link: 'https://www.bassetthoundnlg.com/menu',
     linkLabel: 'Bassett Hound website',
