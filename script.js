@@ -73,16 +73,6 @@ const HOLES = [
   },
   {
     num: 4,
-    name: 'O\'Donovan\'s',
-    par: 3,
-    img: 'hole6.jpg',
-    link: 'https://odonovans.com/',
-    linkLabel: 'O\'Donovan\'s website',
-    beer: ['Smithwicks Red Ale 4.5% ABV', 'Finnegans Irish Amber 4.8% ABV', 'Guinesss 4.25 ABV'],
-    liquor: ['O\'Donovan\'s Bloody', 'O\'Donovan\'s Red Rose', 'Irish Blueberry Black Tea'],
-  },
-  {
-    num: 5,
     name: 'Smorgies',
     par: 5,
     img: 'hole5.jpg',
@@ -91,6 +81,16 @@ const HOLES = [
     beer: ['Tap List', 'Is Unknown', 'But There are Canned Drinks'],
     liquor: ['Smorgies Hibiscus Spritz', 'Cucumber Cooler', 'Chelsea\'s Red Sangria'],
     bonus: { title: 'Earning the Par 5', text: 'To make this hole a true par five, each golfer must also take two shots.' },
+  },
+    {
+    num: 5,
+    name: 'Bassett Hound',
+    par: 3,
+    img: 'hole6.jpg',
+    link: 'https://www.bassetthoundnlg.com/menu',
+    linkLabel: 'Bassett Hound website',
+    beer: ['Barrel Theory', 'Elm Creek Sour', 'MN Craft Beer Rotational'],
+    liquor: ['Any Spritz', 'Minneapolis Mule', 'Far North Old Fashioned'],
     turnAfter: true,
   },
   {
