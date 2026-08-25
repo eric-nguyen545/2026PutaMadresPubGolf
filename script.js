@@ -735,7 +735,6 @@ function initScorecardInteractivity() {
       const pw = window.prompt('Password to edit the scorecard:');
       if (pw === null) return;
       if (pw === EDIT_PASSWORD) {
-        localStorage.setItem('scorecardEditUnlocked', 'true');
         setEditMode(true);
       } else {
         window.alert('Wrong password.');
@@ -758,12 +757,9 @@ function initScorecardInteractivity() {
     });
   }
 
-  // Restore edit mode if this device already unlocked it before
-  if (localStorage.getItem('scorecardEditUnlocked') === 'true') {
-    setEditMode(true);
-  } else {
-    setEditMode(false);
-  }
+  // Scorecard always starts locked on page load — editing requires the
+  // password fresh every time, it never persists across reloads.
+  setEditMode(false);
 }
 
 function initScorecardData() {
@@ -784,6 +780,10 @@ function initScorecardData() {
 
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+
+  // Clean up an old persisted unlock flag from a previous version of the
+  // site — editing is no longer meant to stay unlocked across reloads.
+  localStorage.removeItem('scorecardEditUnlocked');
 
   renderRoster();
   renderHoles();
