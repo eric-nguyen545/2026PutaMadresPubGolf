@@ -6,23 +6,23 @@
 // Move players between teams, rename teams, or reorder here — both the
 // roster cards and the scorecard rows are rendered from this array.
 const TEAMS = [
-  { id: 'team1', name: "[Insert Team Name Here]", players: [
+  { id: 'team1', name: "Designated Drivers", players: [
       { id: 'p1', name: 'Michael', fullName: 'Michael Prosch', img: 'images/team1-michael.jpg' },
       { id: 'p2', name: 'Ethan',   fullName: 'Ethan Mus',      img: 'images/team1-ethan.jpg' },
   ]},
-  { id: 'team2', name: "[Insert Team Name Here]", players: [
+  { id: 'team2', name: "Grip It and Sip It", players: [
       { id: 'p1', name: 'Alex',  fullName: 'Alex Gamber', img: 'images/team3-alex.jpg' },
       { id: 'p2', name: 'Hogan', fullName: 'Hogan Sinjem',  img: 'images/team2-hogan.jpg' },
   ]},
-  { id: 'team3', name: "[Insert Team Name Here]", players: [
+  { id: 'team3', name: "Par-Tee Animals", players: [
       { id: 'p1', name: 'Cole',  fullName: 'Cole Bridson',    img: 'images/team2-cole.jpg' },
       { id: 'p2', name: 'Nolan', fullName: 'Nolan Peterson', img: 'images/team3-nolan.jpg' },
   ]},
-  { id: 'team4', name: "[Insert Team Name Here]", players: [
+  { id: 'team4', name: "Teed Up and Turnt", players: [
       { id: 'p1', name: 'Colton', fullName: 'Colton Kayser', img: 'images/team4-colton.jpg' },
       { id: 'p2', name: 'Cullen', fullName: 'Cullen Mork',   img: 'images/team4-cullen.jpg' },
   ]},
-  { id: 'team5', name: "[Insert Team Name Here]", players: [
+  { id: 'team5', name: "Shankaholics", players: [
       { id: 'p1', name: 'Eric',  fullName: 'Eric Nguyen',  img: 'images/team5-eric.jpg' },
       { id: 'p2', name: 'Riley', fullName: 'Riley Lamott', img: 'images/team5-riley.jpg' },
   ]},
