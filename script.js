@@ -145,7 +145,7 @@ const DRINK_ICON = { beer: '🍺', liquor: '🥃', dealer: '🎲' };
 // ---------------- Passwords (front-end only — not real security) ----------------
 // Anyone who views source can read these. They exist to stop casual
 // bumps/edits, not to protect anything sensitive. Change them freely.
-const EDIT_PASSWORD = 'putagolf26';        // required to edit the live scorecard
+const EDIT_PASSWORD = 'noBallsInH0les';        // required to edit the live scorecard
 const TEST_BYPASS_PASSWORD = 'caddie';     // unlocks the scorecard early, for testing
 
 // ---------------- Firebase (enables cross-device sync) ----------------
@@ -193,12 +193,12 @@ function initSyncStatus() {
 }
 
 // ---------------- Scorecard countdown gate ----------------
-// The scorecard itself opens August 29, 2026, 12:00 PM Central Time.
+// The scorecard itself opens August 29, 2026, 2:00 PM Central Time.
 // Central is UTC-5 in late August (daylight time), so this offset is exact
 // regardless of what timezone the visitor's device is set to.
 // The rest of the page (holes, teams, rules, etc.) is always visible —
 // only the scorecard table is hidden behind this countdown.
-const REVEAL_TIME = new Date('2026-08-29T12:00:00-05:00').getTime();
+const REVEAL_TIME = new Date('2026-08-29T14:00:00-05:00').getTime();
 const BYPASS_KEY = 'putaMadresScorecardBypass';
 
 function isBypassed() {
