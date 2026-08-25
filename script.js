@@ -456,7 +456,7 @@ function renderScorecard() {
       teamTotalCells += `<td class="team-hole-total" data-hole="${h}">—</td>`;
     }
     rowsHtml += `<tr class="team-total-row" data-team="${team.id}">
-      <td>${team.name} Total</td>
+      <td>${team.name}</td>
       ${teamTotalCells}
       <td class="total-cell team-total-cell">—</td>
     </tr>`;
