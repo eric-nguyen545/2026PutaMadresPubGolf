@@ -293,6 +293,19 @@
       <!-- Actual scorecard, hidden until the gate above unlocks -->
       <div id="scorecard-content">
 
+        <div class="leaderboards reveal">
+          <div class="leaderboard-panel">
+            <h3 class="leaderboard-title">Player Standings</h3>
+            <p class="leaderboard-sub">Lowest total on top. Updates once a hole is fully entered.</p>
+            <div class="leaderboard-list" id="player-leaderboard-list"><!-- populated by script.js --></div>
+          </div>
+          <div class="leaderboard-panel">
+            <h3 class="leaderboard-title">Team Standings</h3>
+            <p class="leaderboard-sub">Lowest total on top. Updates once a hole is fully entered.</p>
+            <div class="leaderboard-list" id="team-leaderboard-list"><!-- populated by script.js --></div>
+          </div>
+        </div>
+
         <div class="scorecard-editbar reveal">
           <span id="edit-status-label" class="edit-status-label">🔒 View only</span>
           <span id="sync-status" class="sync-status-label">…</span>

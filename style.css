@@ -898,6 +898,273 @@ table.scorecard tr.leader td{ background:rgba(233,164,0,.1); }
 table.scorecard tr.leader td:first-child{ background:rgba(233,164,0,.18); }
 table.scorecard tr.par-row td:first-child{ background:#40542A; }
 table.scorecard tr.team-total-row td:first-child{ background:#264C3C; }
+
+/* ============================================================
+   STANDINGS  (player + team leaderboards, above the scorecard table)
+   ============================================================ */
+.leaderboards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.25rem;
+  margin-bottom:2rem;
+}
+@media (max-width:760px){
+  .leaderboards{ grid-template-columns:1fr; }
+}
+
+.leaderboard-panel{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  padding:1.25rem 1.3rem;
+}
+.leaderboard-title{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:1.05rem;
+  color:var(--gold-soft);
+  margin:0 0 .2rem;
+}
+.leaderboard-sub{
+  font-size:.75rem;
+  color:rgba(255,255,255,.5);
+  margin:0 0 1rem;
+}
+.leaderboard-list{
+  display:flex;
+  flex-direction:column;
+  gap:.5rem;
+}
+
+.leaderboard-rank{
+  flex:0 0 auto;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.7);
+  font-size:.72rem;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.leaderboard-player{
+  display:flex;
+  align-items:center;
+  gap:.65rem;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  padding:.5rem .7rem;
+}
+.leaderboard-avatar{
+  flex:0 0 auto;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid rgba(255,255,255,.15);
+}
+.leaderboard-player-info{
+  flex:1 1 auto;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+.leaderboard-name{
+  font-size:.85rem;
+  font-weight:700;
+  color:var(--white);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.leaderboard-caption{
+  font-size:.68rem;
+  color:rgba(255,255,255,.5);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.leaderboard-team-item{
+  display:flex;
+  align-items:center;
+  gap:.65rem;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  padding:.6rem .7rem;
+}
+.leaderboard-team-name{
+  flex:1 1 auto;
+  min-width:0;
+  font-size:.9rem;
+  font-weight:700;
+  color:var(--white);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.leaderboard-total{
+  flex:0 0 auto;
+  font-weight:800;
+  color:var(--gold-soft);
+  font-size:.95rem;
+}
+
+/* ============================================================
+   PENALTY POPUP  (one incrementable counter per penalty type,
+   description shown alongside each; opens as a fixed overlay so it
+   never affects the scorecard's row height or column widths)
+   ============================================================ */
+.penalty-cell{ padding:.5rem .4rem !important; text-align:left !important; }
+
+.penalty-dropdown{ display:inline-block; }
+.penalty-summary{
+  list-style:none;
+  cursor:pointer;
+  user-select:none;
+  font-size:.72rem;
+  font-weight:700;
+  white-space:nowrap;
+  color:rgba(255,255,255,.55);
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  padding:.35rem .7rem;
+}
+.penalty-summary::-webkit-details-marker{ display:none; }
+.penalty-summary::before{ content:'▸ '; font-size:.65rem; }
+details[open] > .penalty-summary::before{ content:'▾ '; }
+.penalty-summary:hover{ background:rgba(255,255,255,.1); }
+.penalty-dropdown.has-penalties > .penalty-summary{
+  color:var(--gold-soft);
+  background:rgba(233,164,0,.14);
+  border-color:rgba(233,164,0,.4);
+}
+
+/* Backdrop behind the open popup */
+.penalty-popup-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(8,16,12,.6);
+  z-index:998;
+  display:none;
+}
+.penalty-popup-backdrop.show{ display:block; }
+body.penalty-popup-open{ overflow:hidden; }
+
+/* The popup itself — fixed + centered, taken completely out of the
+   table's layout flow so opening it never resizes the scorecard */
+.penalty-dropdown-body{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:999;
+  width:300px;
+  max-width:88vw;
+  max-height:80vh;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:.4rem;
+  background:#163827;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:14px;
+  padding:1rem;
+  box-shadow:0 20px 60px rgba(0,0,0,.55);
+  text-align:left;
+}
+.penalty-popup-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.5rem;
+  margin-bottom:.2rem;
+}
+.penalty-popup-title{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:.9rem;
+  color:var(--gold-soft);
+}
+.penalty-popup-close{
+  flex:0 0 auto;
+  width:24px;
+  height:24px;
+  line-height:1;
+  border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.06);
+  color:var(--white);
+  border-radius:6px;
+  cursor:pointer;
+  font-size:.8rem;
+}
+.penalty-popup-close:hover{ background:rgba(255,255,255,.16); }
+
+.penalty-row{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;
+  padding:.4rem .5rem;
+}
+.penalty-row.has-count{
+  background:rgba(233,164,0,.1);
+  border-color:rgba(233,164,0,.3);
+}
+.penalty-row-icon{ font-size:.95rem; flex:0 0 auto; }
+.penalty-row-desc{
+  flex:1 1 auto;
+  font-size:.7rem;
+  font-weight:500;
+  color:rgba(255,255,255,.8);
+  line-height:1.25;
+  text-align:left;
+}
+.penalty-row-desc em{ font-style:normal; color:rgba(255,255,255,.45); }
+.penalty-row-controls{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.penalty-count{
+  min-width:16px;
+  text-align:center;
+  font-size:.8rem;
+  font-weight:700;
+  color:var(--gold-soft);
+}
+.penalty-btn{
+  width:20px;
+  height:20px;
+  padding:0;
+  line-height:1;
+  font-size:.8rem;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+  color:var(--white);
+  border-radius:5px;
+  cursor:pointer;
+}
+.penalty-btn:hover:not(:disabled){ background:rgba(255,255,255,.16); }
+.penalty-btn:disabled{ opacity:.25; cursor:not-allowed; }
+
+table.scorecard td.team-penalty-total{
+  font-weight:700;
+  color:rgba(255,255,255,.6);
+  font-size:.8rem;
+}
 table.scorecard tr.team-total-row.leader td:first-child{ background:#3A5221; }
 .leader-tag{ font-size:.62rem; background:var(--gold); color:var(--green-deep); padding:1px 6px; border-radius:4px; margin-left:.4rem; letter-spacing:.04em; }
 

@@ -32,15 +32,37 @@ Open `script.js`:
 
 ## The scorecard
 
+- **Player Standings** and **Team Standings** sit right above the entry
+  table, inside the same countdown-gated area. Player Standings shows each
+  golfer's photo, name, team name as a caption underneath, and running
+  total, lowest at the top. Team Standings is the same idea one level up.
+  Both re-sort only once a whole hole has been completed by everyone (the
+  numbers themselves still update live on every keystroke) — same
+  "don't jump around mid-entry" behavior the scorecard's own team rows
+  always had.
 - Visible to everyone once it unlocks (countdown to Aug 29, 2026, 12:00 PM CT)
   — no password needed just to view it.
 - **Editing** (entering scores or drink types) requires a password:
-  `putagolf26` — change `EDIT_PASSWORD` in `script.js`.
+  `putagolf26` — change `EDIT_PASSWORD` in `script.js`. Editing is always
+  locked when the page loads or reloads — there's no "stay unlocked"
+  option, the password has to be entered fresh every time.
 - **Testing before tee time**: "Have an early-access code?" in the locked
   countdown box, code is `caddie` (change `TEST_BYPASS_PASSWORD`).
 - Each player gets a strokes input per hole plus three drink-type chips
   (🍺 beer / 🥃 liquor / 🎲 dealer's choice), gated at 4 beer / 4 liquor /
   1 dealer's choice per player.
+- **Penalties** column has a "No penalties" / "⚠️ Penalties +N" button per
+  player — tap it to open a popup listing every penalty type from the
+  Penalty Ladder, each with its full description and a +/- counter next to
+  it ("In bed by 10 PM" isn't included, since it's a DQ flag rather than a
+  repeatable stroke penalty). It opens as an overlay (with a backdrop, a
+  close button, and Escape-to-close) rather than expanding in place, so it
+  never changes the scorecard's row height or column widths. Each tap
+  adds/removes one occurrence; the strokes from all of them are
+  automatically folded into that player's total and their team's total.
+  `PENALTY_TYPES` in `script.js` is the source of truth for the list and
+  stroke values, so it stays in sync with the Penalty Ladder section if you
+  ever change one.
 - **Caddie secrets only reveal once every golfer has a score in** for the
   hole right before the hazard — not the moment the first score comes in.
 - **Team ranking only reorders once a whole hole has been completed by

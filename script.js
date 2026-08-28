@@ -1,9 +1,9 @@
 // ============================================================
-// PUTA MADRES PUB GOLF — site behavior
+// PUTA MADRES PUB GOLF - site behavior
 // ============================================================
 
 // ---------------- Team roster (single source of truth) ----------------
-// Move players between teams, rename teams, or reorder here — both the
+// Move players between teams, rename teams, or reorder here - both the
 // roster cards and the scorecard rows are rendered from this array.
 const TEAMS = [
   { id: 'team1', name: "Designated Drivers", players: [
@@ -30,7 +30,7 @@ const TEAMS = [
 
 // ---------------- Hole course (single source of truth) ----------------
 // Move a hole to a new position, edit its drinks/links/par, or add a new
-// hazard secret here — the hole sections AND the scorecard header/par row
+// hazard secret here - the hole sections AND the scorecard header/par row
 // regenerate from this one array automatically. `unlockAfterHole` reveals
 // a hazard's secret once every golfer has a score in for that earlier hole.
 // `turnAfter: true` drops the Graze Food Hall "turn" section in right after
@@ -142,7 +142,26 @@ const PAR = Object.fromEntries(HOLES.map(h => [h.num, h.par]));
 const DRINK_MAX = { beer: 4, liquor: 4, dealer: 1 };
 const DRINK_ICON = { beer: '🍺', liquor: '🥃', dealer: '🎲' };
 
-// ---------------- Passwords (front-end only — not real security) ----------------
+// Mirrors the stroke penalties in the Penalty Ladder section - everything
+// except "In bed by 10:00 PM", which is a DQ flag, not a repeatable stroke
+// penalty, so it's tracked on the honor system rather than as a counter.
+const PENALTY_TYPES = [
+  { id: 'spillOwn',   icon: '🥤', label: 'Spill own drink',          strokes: 1 },
+  { id: 'pace',       icon: '🐌', label: 'Slow pace of play',        strokes: 2 },
+  { id: 'spillOther', icon: '💦', label: "Spill another's drink",    strokes: 2 },
+  { id: 'dnf',        icon: '🚫', label: "Can't finish a hole",      strokes: 3 },
+  { id: 'puke',       icon: '🤮', label: 'Puke',                     strokes: 5 },
+  { id: 'ejected',    icon: '🚪', label: 'Ejected / ditched group',  strokes: 10 },
+  { id: 'conduct',    icon: '🥊', label: 'Cheat, argue, or fight',   strokes: 10 },
+  { id: 'tagalong',   icon: '👥', label: 'Tag-along shows up',       strokes: 50 },
+];
+
+function penaltyStrokes(penalties) {
+  if (!penalties) return 0;
+  return PENALTY_TYPES.reduce((sum, p) => sum + (penalties[p.id] || 0) * p.strokes, 0);
+}
+
+// ---------------- Passwords (front-end only - not real security) ----------------
 // Anyone who views source can read these. They exist to stop casual
 // bumps/edits, not to protect anything sensitive. Change them freely.
 const EDIT_PASSWORD = 'noBallsInH0les';        // required to edit the live scorecard
@@ -165,7 +184,7 @@ try {
     fbRef = firebase.database().ref(FIREBASE_PATH);
   }
 } catch (e) {
-  console.warn('Firebase not configured — scorecard will stay local to this device.', e);
+  console.warn('Firebase not configured - scorecard will stay local to this device.', e);
   fbRef = null;
 }
 
@@ -176,7 +195,7 @@ function initSyncStatus() {
 
   if (!fbRef) {
     el.textContent = '⚪ Local only (this device)';
-    el.title = 'Firebase isn\'t configured — scores stay on this device only.';
+    el.title = 'Firebase isn\'t configured - scores stay on this device only.';
     return;
   }
 
@@ -184,10 +203,10 @@ function initSyncStatus() {
   connectedRef.on('value', (snap) => {
     if (snap.val() === true) {
       el.textContent = '🟢 Live sync';
-      el.title = 'Connected — scores sync across every device viewing this page.';
+      el.title = 'Connected - scores sync across every device viewing this page.';
     } else {
       el.textContent = '🟡 Reconnecting…';
-      el.title = 'Not connected right now — edits save locally and will sync once back online.';
+      el.title = 'Not connected right now - edits save locally and will sync once back online.';
     }
   });
 }
@@ -196,7 +215,7 @@ function initSyncStatus() {
 // The scorecard itself opens August 29, 2026, 2:00 PM Central Time.
 // Central is UTC-5 in late August (daylight time), so this offset is exact
 // regardless of what timezone the visitor's device is set to.
-// The rest of the page (holes, teams, rules, etc.) is always visible —
+// The rest of the page (holes, teams, rules, etc.) is always visible -
 // only the scorecard table is hidden behind this countdown.
 const REVEAL_TIME = new Date('2026-08-29T14:00:00-05:00').getTime();
 const BYPASS_KEY = 'putaMadresScorecardBypass';
@@ -260,7 +279,7 @@ function initEarlyAccess() {
       sessionStorage.setItem(BYPASS_KEY, 'true');
       unlockScorecard();
     } else {
-      window.alert('Nope — try again.');
+      window.alert('Nope - try again.');
     }
   });
 }
@@ -298,7 +317,7 @@ function renderRoster() {
 function drinkSlots(items) {
   const padded = items.concat([null, null, null]).slice(0, 3);
   return padded.map(item =>
-    item ? `<li>${item}</li>` : `<li class="empty">—</li>`
+    item ? `<li>${item}</li>` : `<li class="empty">-</li>`
   ).join('\n');
 }
 
@@ -411,13 +430,13 @@ function renderScorecardHead() {
   const headerCells = sorted.map(h =>
     `<th${h.canned ? ' class="canned-col" title="Canned drinks only at this hole"' : ''}>H${h.num}${h.canned ? ' 🥫' : ''}</th>`
   ).join('');
-  headerRow.innerHTML = `<th>Player</th>${headerCells}<th>Total</th>`;
+  headerRow.innerHTML = `<th>Player</th>${headerCells}<th>Penalties</th><th>Total</th>`;
 
   const parCells = sorted.map(h => {
     parTotal += h.par;
     return `<td${h.canned ? ' class="canned-col"' : ''}>${h.par}</td>`;
   }).join('');
-  parRow.innerHTML = `<td>Par</td>${parCells}<td>${parTotal}</td>`;
+  parRow.innerHTML = `<td>Par</td>${parCells}<td>-</td><td>${parTotal}</td>`;
 }
 
 // ---------------- Scorecard rows rendering ----------------
@@ -427,6 +446,30 @@ function drinkTypeGroup(team, player, hole) {
     `<button type="button" class="drink-chip" data-type="${t}" data-team="${team}" data-player="${player}" data-hole="${hole}" title="${t}">${DRINK_ICON[t]}</button>`
   ).join('');
   return `<div class="drink-type-group">${chips}</div>`;
+}
+
+function penaltyCountersHtml(team, player, playerName) {
+  const rows = PENALTY_TYPES.map(p => `
+    <div class="penalty-row" data-type="${p.id}">
+      <span class="penalty-row-icon">${p.icon}</span>
+      <span class="penalty-row-desc">${p.label} <em>(+${p.strokes} each)</em></span>
+      <div class="penalty-row-controls">
+        <button type="button" class="penalty-btn penalty-dec" data-team="${team}" data-player="${player}" data-type="${p.id}" disabled>−</button>
+        <span class="penalty-count" data-team="${team}" data-player="${player}" data-type="${p.id}">0</span>
+        <button type="button" class="penalty-btn penalty-inc" data-team="${team}" data-player="${player}" data-type="${p.id}" disabled>+</button>
+      </div>
+    </div>`).join('');
+  return `
+    <details class="penalty-dropdown">
+      <summary class="penalty-summary" data-team="${team}" data-player="${player}">No penalties</summary>
+      <div class="penalty-dropdown-body">
+        <div class="penalty-popup-head">
+          <span class="penalty-popup-title">${playerName} - Penalties</span>
+          <button type="button" class="penalty-popup-close" title="Close">✕</button>
+        </div>
+        ${rows}
+      </div>
+    </details>`;
 }
 
 function renderScorecard() {
@@ -447,22 +490,105 @@ function renderScorecard() {
       rowsHtml += `<tr class="player-row" data-team="${team.id}" data-player="${pIdx + 1}">
         <td><span class="player-name">${player.name}</span><span class="player-drink-counts" data-team="${team.id}" data-player="${pIdx + 1}"></span></td>
         ${cells}
-        <td class="total-cell">—</td>
+        <td class="penalty-cell">${penaltyCountersHtml(team.id, pIdx + 1, player.name)}</td>
+        <td class="total-cell">-</td>
       </tr>`;
     });
 
     let teamTotalCells = '';
     for (let h = 1; h <= HOLE_COUNT; h++) {
-      teamTotalCells += `<td class="team-hole-total" data-hole="${h}">—</td>`;
+      teamTotalCells += `<td class="team-hole-total" data-hole="${h}">-</td>`;
     }
     rowsHtml += `<tr class="team-total-row" data-team="${team.id}">
-      <td>${team.name}</td>
+      <td>${team.name} Total</td>
       ${teamTotalCells}
-      <td class="total-cell team-total-cell">—</td>
+      <td class="team-penalty-total">-</td>
+      <td class="total-cell team-total-cell">-</td>
     </tr>`;
   });
 
   body.innerHTML = rowsHtml;
+}
+
+// ---------------- Standings (player + team leaderboards) ----------------
+// Built once at load, same as the scorecard rows. Numbers update on every
+// keystroke; the actual DOM order only changes once a whole hole has been
+// completed by everyone (see the reorder calls inside updateScorecard()).
+function renderPlayerLeaderboard() {
+  const list = document.getElementById('player-leaderboard-list');
+  if (!list) return;
+
+  let html = '';
+  TEAMS.forEach(team => {
+    team.players.forEach((player, pIdx) => {
+      const key = `${team.id}-p${pIdx + 1}`;
+      html += `
+        <div class="leaderboard-player" data-player="${key}">
+          <span class="leaderboard-rank"></span>
+          <img class="leaderboard-avatar" src="${player.img}" alt="${player.name}" loading="lazy">
+          <div class="leaderboard-player-info">
+            <span class="leaderboard-name">${player.name}</span>
+            <span class="leaderboard-caption">${team.name}</span>
+          </div>
+          <span class="leaderboard-total" data-player="${key}">-</span>
+        </div>`;
+    });
+  });
+  list.innerHTML = html;
+  updateLeaderboardRanks(list, '.leaderboard-player');
+}
+
+function renderTeamLeaderboard() {
+  const list = document.getElementById('team-leaderboard-list');
+  if (!list) return;
+
+  const html = TEAMS.map(team => `
+    <div class="leaderboard-team-item" data-team="${team.id}">
+      <span class="leaderboard-rank"></span>
+      <span class="leaderboard-team-name">${team.name}</span>
+      <span class="leaderboard-total" data-team="${team.id}">-</span>
+    </div>`).join('');
+  list.innerHTML = html;
+  updateLeaderboardRanks(list, '.leaderboard-team-item');
+}
+
+function updateLeaderboardRanks(list, itemSelector) {
+  Array.from(list.querySelectorAll(itemSelector)).forEach((el, i) => {
+    const rankEl = el.querySelector('.leaderboard-rank');
+    if (rankEl) rankEl.textContent = i + 1;
+  });
+}
+
+function reorderPlayerLeaderboard(sortedKeys) {
+  const list = document.getElementById('player-leaderboard-list');
+  if (!list) return;
+
+  const currentOrder = Array.from(list.querySelectorAll('.leaderboard-player')).map(el => el.dataset.player);
+  const unchanged = currentOrder.length === sortedKeys.length &&
+    currentOrder.every((id, i) => id === sortedKeys[i]);
+  if (!unchanged) {
+    sortedKeys.forEach(key => {
+      const el = list.querySelector(`.leaderboard-player[data-player="${key}"]`);
+      if (el) list.appendChild(el);
+    });
+  }
+  updateLeaderboardRanks(list, '.leaderboard-player');
+}
+
+function reorderTeamLeaderboard(sortedTeamIds) {
+  const list = document.getElementById('team-leaderboard-list');
+  if (!list) return;
+
+  const currentOrder = Array.from(list.querySelectorAll('.leaderboard-team-item')).map(el => el.dataset.team);
+  const unchanged = currentOrder.length === sortedTeamIds.length &&
+    currentOrder.every((id, i) => id === sortedTeamIds[i]);
+  if (!unchanged) {
+    sortedTeamIds.forEach(teamId => {
+      const el = list.querySelector(`.leaderboard-team-item[data-team="${teamId}"]`);
+      if (el) list.appendChild(el);
+    });
+  }
+  updateLeaderboardRanks(list, '.leaderboard-team-item');
 }
 
 // ---------------- Scorecard state + logic ----------------
@@ -502,6 +628,20 @@ function pushFullReset() {
   }
 }
 
+// Same pattern as pushEntry but for a player's whole `penalties` object
+// (one path per player, not per hole - counters aren't tied to a hole).
+function pushPenalties(key, penalties) {
+  saveLocalState(scorecardState);
+  if (!fbRef) return;
+
+  const pendingKey = `${key}/penalties`;
+  clearTimeout(pendingPushes[pendingKey]);
+  pendingPushes[pendingKey] = setTimeout(() => {
+    fbRef.child(key).child('penalties').set(penalties)
+      .catch(err => console.warn('Firebase sync failed, saved locally only.', err));
+  }, 350);
+}
+
 function applyScoreStyle(input, hole) {
   input.classList.remove('under-par', 'over-par', 'diff-1', 'diff-2', 'diff-3');
   const val = parseInt(input.value, 10);
@@ -537,7 +677,7 @@ function isHoleFullyEntered(hole) {
 
 function checkSecretTriggers() {
   // A hazard's secret only shows once every golfer has finished the hole
-  // right before it — not the moment the first score comes in.
+  // right before it - not the moment the first score comes in.
   HOLES.forEach(hole => {
     if (hole.secret && isHoleFullyEntered(hole.unlockAfterHole)) {
       unlockSecret(hole.secret.id);
@@ -570,6 +710,8 @@ function reorderTeamRows(sortedTeamIds) {
 }
 
 function updateScorecard() {
+  const playerResults = [];
+
   document.querySelectorAll('tr.player-row').forEach(row => {
     const team = row.dataset.team;
     const player = row.dataset.player;
@@ -586,7 +728,36 @@ function updateScorecard() {
       const v = parseInt(scoreVal, 10);
       if (!isNaN(v)) { total += v; filled++; }
     });
-    row.querySelector('.total-cell').textContent = filled > 0 ? total : '—';
+
+    // Penalty counters
+    const penalties = playerScores.penalties || {};
+    const penaltyTotal = penaltyStrokes(penalties);
+    total += penaltyTotal;
+    row.querySelectorAll('.penalty-row').forEach(rowEl => {
+      const type = rowEl.dataset.type;
+      const count = penalties[type] || 0;
+      rowEl.querySelector('.penalty-count').textContent = count;
+      const decBtn = rowEl.querySelector('.penalty-dec');
+      const incBtn = rowEl.querySelector('.penalty-inc');
+      decBtn.disabled = !editUnlocked || count <= 0;
+      incBtn.disabled = !editUnlocked;
+      rowEl.classList.toggle('has-count', count > 0);
+    });
+    const summary = row.querySelector('.penalty-summary');
+    if (summary) {
+      summary.textContent = penaltyTotal > 0 ? `⚠️ Penalties +${penaltyTotal}` : 'No penalties';
+      const dropdown = summary.closest('.penalty-dropdown');
+      if (dropdown) dropdown.classList.toggle('has-penalties', penaltyTotal > 0);
+    }
+
+    row.querySelector('.total-cell').textContent = (filled > 0 || penaltyTotal > 0) ? total : '-';
+
+    // Player Standings - number updates live; the leaderboard's row ORDER
+    // is only touched down in the completedSetKey block below.
+    const hasAny = filled > 0 || penaltyTotal > 0;
+    const lbPlayerTotal = document.querySelector(`.leaderboard-total[data-player="${key}"]`);
+    if (lbPlayerTotal) lbPlayerTotal.textContent = hasAny ? total : '-';
+    playerResults.push({ key, total, hasAny });
 
     // Drink-type chip active states + disabling maxed-out types
     const counts = drinkCounts(playerScores);
@@ -616,13 +787,27 @@ function updateScorecard() {
       let sum = 0, has = false;
       if (e1 && e1.score !== '' && e1.score !== undefined && e1.score !== null && !isNaN(parseInt(e1.score, 10))) { sum += parseInt(e1.score, 10); has = true; }
       if (e2 && e2.score !== '' && e2.score !== undefined && e2.score !== null && !isNaN(parseInt(e2.score, 10))) { sum += parseInt(e2.score, 10); has = true; }
-      row.querySelector(`.team-hole-total[data-hole="${h}"]`).textContent = has ? sum : '—';
+      row.querySelector(`.team-hole-total[data-hole="${h}"]`).textContent = has ? sum : '-';
       if (has) { grand += sum; anyFilled = true; }
     }
+
+    // Penalty strokes - both players on the team, folded into the grand total.
+    const p1Penalty = penaltyStrokes(scorecardState[`${team}-p1`] && scorecardState[`${team}-p1`].penalties);
+    const p2Penalty = penaltyStrokes(scorecardState[`${team}-p2`] && scorecardState[`${team}-p2`].penalties);
+    const teamPenaltyTotal = p1Penalty + p2Penalty;
+    if (teamPenaltyTotal > 0) { grand += teamPenaltyTotal; anyFilled = true; }
+    const penaltyCell = row.querySelector('.team-penalty-total');
+    if (penaltyCell) penaltyCell.textContent = teamPenaltyTotal > 0 ? `+${teamPenaltyTotal}` : '-';
+
     const totalCell = row.querySelector('.team-total-cell');
-    totalCell.textContent = anyFilled ? grand : '—';
+    totalCell.textContent = anyFilled ? grand : '-';
     row.classList.remove('leader');
-    teamResults.push({ row, grand, anyFilled, totalCell });
+    teamResults.push({ team, row, grand, anyFilled, totalCell });
+
+    // Team Standings - number updates live; row ORDER only changes in the
+    // completedSetKey block below.
+    const lbTeamTotal = document.querySelector(`.leaderboard-total[data-team="${team}"]`);
+    if (lbTeamTotal) lbTeamTotal.textContent = anyFilled ? grand : '-';
   });
 
   const inPlay = teamResults.filter(t => t.anyFilled);
@@ -641,18 +826,26 @@ function updateScorecard() {
     });
   }
 
-  // Lowest total climbs to the top of the card; teams with no scores yet
-  // stay put at the bottom in their original order. Reordering only fires
-  // when a whole hole has just been completed by every golfer, so rows
-  // don't jump around mid-entry while people are still typing.
+  // Lowest total climbs to the top of the card (and the standings above);
+  // players/teams with no scores yet stay put at the bottom in their
+  // original order. Reordering only fires when a whole hole has just been
+  // completed by every golfer, so rows don't jump around mid-entry while
+  // people are still typing.
   const completedSetKey = HOLES.map(h => isHoleFullyEntered(h.num) ? '1' : '0').join('');
   if (completedSetKey !== lastCompletedSetKey) {
     lastCompletedSetKey = completedSetKey;
     const sortedTeamIds = teamResults
-      .map((t, i) => ({ id: t.row.dataset.team, sortKey: t.anyFilled ? t.grand : Infinity, i }))
+      .map((t, i) => ({ id: t.team, sortKey: t.anyFilled ? t.grand : Infinity, i }))
       .sort((a, b) => a.sortKey - b.sortKey || a.i - b.i)
       .map(t => t.id);
     reorderTeamRows(sortedTeamIds);
+    reorderTeamLeaderboard(sortedTeamIds);
+
+    const sortedPlayerKeys = playerResults
+      .map((p, i) => ({ id: p.key, sortKey: p.hasAny ? p.total : Infinity, i }))
+      .sort((a, b) => a.sortKey - b.sortKey || a.i - b.i)
+      .map(p => p.id);
+    reorderPlayerLeaderboard(sortedPlayerKeys);
   }
 
   checkSecretTriggers();
@@ -724,6 +917,72 @@ function initScorecardInteractivity() {
     });
   });
 
+  // Penalty counters
+  document.querySelectorAll('.penalty-inc').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!editUnlocked) return;
+      const key = `${btn.dataset.team}-p${btn.dataset.player}`;
+      const type = btn.dataset.type;
+      if (!scorecardState[key]) scorecardState[key] = {};
+      if (!scorecardState[key].penalties) scorecardState[key].penalties = {};
+      scorecardState[key].penalties[type] = (scorecardState[key].penalties[type] || 0) + 1;
+
+      pushPenalties(key, scorecardState[key].penalties);
+      updateScorecard();
+    });
+  });
+  document.querySelectorAll('.penalty-dec').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!editUnlocked) return;
+      const key = `${btn.dataset.team}-p${btn.dataset.player}`;
+      const type = btn.dataset.type;
+      const current = (scorecardState[key] && scorecardState[key].penalties && scorecardState[key].penalties[type]) || 0;
+      if (current <= 0) return;
+      scorecardState[key].penalties[type] = current - 1;
+
+      pushPenalties(key, scorecardState[key].penalties);
+      updateScorecard();
+    });
+  });
+
+  // Penalty popup behavior: opens as a fixed overlay (doesn't affect the
+  // scorecard's row height/dimensions), only one open at a time, with a
+  // backdrop + close button + Escape key to dismiss.
+  const penaltyBackdrop = document.createElement('div');
+  penaltyBackdrop.className = 'penalty-popup-backdrop';
+  document.body.appendChild(penaltyBackdrop);
+
+  function closeAllPenaltyPopups() {
+    document.querySelectorAll('.penalty-dropdown[open]').forEach(d => d.removeAttribute('open'));
+  }
+
+  document.querySelectorAll('.penalty-dropdown').forEach(dd => {
+    dd.addEventListener('toggle', () => {
+      if (dd.open) {
+        document.querySelectorAll('.penalty-dropdown[open]').forEach(other => {
+          if (other !== dd) other.removeAttribute('open');
+        });
+        penaltyBackdrop.classList.add('show');
+        document.body.classList.add('penalty-popup-open');
+      } else if (!document.querySelector('.penalty-dropdown[open]')) {
+        penaltyBackdrop.classList.remove('show');
+        document.body.classList.remove('penalty-popup-open');
+      }
+    });
+  });
+
+  document.querySelectorAll('.penalty-popup-close').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const dd = btn.closest('.penalty-dropdown');
+      if (dd) dd.removeAttribute('open');
+    });
+  });
+
+  penaltyBackdrop.addEventListener('click', closeAllPenaltyPopups);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAllPenaltyPopups();
+  });
+
   // Edit toggle
   const editBtn = document.getElementById('edit-toggle-btn');
   if (editBtn) {
@@ -757,7 +1016,7 @@ function initScorecardInteractivity() {
     });
   }
 
-  // Scorecard always starts locked on page load — editing requires the
+  // Scorecard always starts locked on page load - editing requires the
   // password fresh every time, it never persists across reloads.
   setEditMode(false);
 }
@@ -782,13 +1041,15 @@ function initScorecardData() {
 document.addEventListener('DOMContentLoaded', () => {
 
   // Clean up an old persisted unlock flag from a previous version of the
-  // site — editing is no longer meant to stay unlocked across reloads.
+  // site - editing is no longer meant to stay unlocked across reloads.
   localStorage.removeItem('scorecardEditUnlocked');
 
   renderRoster();
   renderHoles();
   renderScorecardHead();
   renderScorecard();
+  renderPlayerLeaderboard();
+  renderTeamLeaderboard();
   initScorecardInteractivity();
   initScorecardData();
   initEarlyAccess();
