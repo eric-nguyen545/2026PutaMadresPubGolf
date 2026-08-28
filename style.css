@@ -999,9 +999,14 @@ table.scorecard tr.team-total-row td:first-child{ background:#264C3C; }
   border-radius:10px;
   padding:.6rem .7rem;
 }
-.leaderboard-team-name{
+.leaderboard-team-info{
   flex:1 1 auto;
   min-width:0;
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+.leaderboard-team-name{
   font-size:.9rem;
   font-weight:700;
   color:var(--white);

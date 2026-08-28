@@ -541,12 +541,15 @@ function renderPlayerLeaderboard() {
 function renderTeamLeaderboard() {
   const list = document.getElementById('team-leaderboard-list');
   if (!list) return;
-
+ 
   const html = TEAMS.map(team => `
     <div class="leaderboard-team-item" data-team="${team.id}">
       <span class="leaderboard-rank"></span>
-      <span class="leaderboard-team-name">${team.name}</span>
-      <span class="leaderboard-total" data-team="${team.id}">-</span>
+      <div class="leaderboard-team-info">
+        <span class="leaderboard-team-name">${team.name}</span>
+        <span class="leaderboard-caption">${team.players.map(p => p.name).join(' & ')}</span>
+      </div>
+      <span class="leaderboard-total" data-team="${team.id}">—</span>
     </div>`).join('');
   list.innerHTML = html;
   updateLeaderboardRanks(list, '.leaderboard-team-item');
