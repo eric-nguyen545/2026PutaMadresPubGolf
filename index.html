@@ -259,10 +259,6 @@
     <h2 class="section-title reveal">The Scorecard</h2>
     <p class="section-sub reveal">Enter each team's strokes as they finish a hole, and tag each drink as a beer, a liquor pour, or your one dealer's choice - 4 beers, 4 liquor, 1 dealer's choice, no more. Totals update automatically, a couple of caddie secrets unlock as you go, and scores sync live across every phone watching this page.</p>
 
-    <div class="scorecard-note reveal">
-      Low score wins. Strongest liver survives. · 🍺 Beer · 🥃 Liquor · 🎲 Dealer's Choice
-    </div>
-
     <div id="scorecard-gate" class="scorecard-gate is-locked">
 
       <!-- Shown only until tee time; covers just the scorecard, not the page -->
@@ -296,14 +292,18 @@
         <div class="leaderboards reveal">
           <div class="leaderboard-panel">
             <h3 class="leaderboard-title">Player Standings</h3>
-            <p class="leaderboard-sub">Lowest total on top. Updates once a hole is fully entered.</p>
+            <p class="leaderboard-sub">Updates once a hole is fully entered.</p>
             <div class="leaderboard-list" id="player-leaderboard-list"><!-- populated by script.js --></div>
           </div>
           <div class="leaderboard-panel">
             <h3 class="leaderboard-title">Team Standings</h3>
-            <p class="leaderboard-sub">Lowest total on top. Updates once a hole is fully entered.</p>
+            <p class="leaderboard-sub">Updates once a hole is fully entered.</p>
             <div class="leaderboard-list" id="team-leaderboard-list"><!-- populated by script.js --></div>
           </div>
+        </div>
+
+        <div class="scorecard-note reveal">
+          Low score wins. Strongest liver survives. · 🍺 Beer · 🥃 Liquor · 🎲 Dealer's Choice
         </div>
 
         <div class="scorecard-editbar reveal">
@@ -326,7 +326,7 @@
         </div>
 
         <div class="scorecard-actions reveal">
-          <span class="autosave-note">Scores sync live to everyone viewing this page. Editing requires a password; viewing doesn't.</span>
+          <span class="autosave-note">Scores sync live to everyone viewing this page.</span>
         </div>
 
       </div><!-- /#scorecard-content -->
