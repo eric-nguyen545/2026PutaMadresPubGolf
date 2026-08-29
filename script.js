@@ -161,6 +161,24 @@ function penaltyStrokes(penalties) {
   return PENALTY_TYPES.reduce((sum, p) => sum + (penalties[p.id] || 0) * p.strokes, 0);
 }
 
+// ---------------- Extra players (scored, but not on any team) ----------------
+// Shown on the scorecard and Player Standings only — never on the Teams
+// page, never given a team-total row, and never counted in Team Standings
+// or in the "has everyone entered a score" checks that gate secret
+// reveals and trigger leaderboard/team reordering (those only loop over
+// TEAMS). Fully locked (score inputs, drink chips, and penalty counters)
+// until they've logged a score for the first hole after the Turn.
+const EXTRA_PLAYERS = [
+  { id: 'extra1', name: 'Jason', fullName: 'Jason Reil', img: 'images/jason.jpg' },
+];
+const TURN_HOLE_NUM = (HOLES.find(h => h.turnAfter) || {}).num || 0;
+
+function extraPlayerPastTurn(key) {
+  const nextHole = TURN_HOLE_NUM + 1;
+  const entry = scorecardState[key] && scorecardState[key][nextHole];
+  return !!(entry && entry.score !== undefined && entry.score !== null && entry.score !== '');
+}
+
 // ---------------- Passwords (front-end only - not real security) ----------------
 // Anyone who views source can read these. They exist to stop casual
 // bumps/edits, not to protect anything sensitive. Change them freely.
@@ -507,6 +525,26 @@ function renderScorecard() {
     </tr>`;
   });
 
+  // Extra players: same row shape, but no team-total-row after them, and
+  // their score/drink cells stay disabled for holes up to the Turn.
+  EXTRA_PLAYERS.forEach((player, idx) => {
+    const pIdx = idx + 1;
+    let cells = '';
+    for (let h = 1; h <= HOLE_COUNT; h++) {
+      const lockedPreTurn = h <= TURN_HOLE_NUM;
+      cells += `<td class="score-cell">
+        <input type="number" min="0" max="20" data-hole="${h}"${lockedPreTurn ? ' disabled' : ''}>
+        ${drinkTypeGroup('extra', pIdx, h)}
+      </td>`;
+    }
+    rowsHtml += `<tr class="player-row extra-player-row" data-team="extra" data-player="${pIdx}">
+      <td><span class="player-name">${player.name}</span><span class="extra-tag">Wildcard</span><span class="player-drink-counts" data-team="extra" data-player="${pIdx}"></span></td>
+      ${cells}
+      <td class="penalty-cell">${penaltyCountersHtml('extra', pIdx, player.name)}</td>
+      <td class="total-cell">-</td>
+    </tr>`;
+  });
+
   body.innerHTML = rowsHtml;
 }
 
@@ -534,6 +572,24 @@ function renderPlayerLeaderboard() {
         </div>`;
     });
   });
+
+  // Extra players show up here too (their own row, sorted by their own
+  // total just like everyone else) but with "Independent" instead of a
+  // team name underneath, since they aren't on a team.
+  EXTRA_PLAYERS.forEach((player, idx) => {
+    const key = `extra-p${idx + 1}`;
+    html += `
+      <div class="leaderboard-player" data-player="${key}">
+        <span class="leaderboard-rank"></span>
+        <img class="leaderboard-avatar" src="${player.img}" alt="${player.name}" loading="lazy">
+        <div class="leaderboard-player-info">
+          <span class="leaderboard-name">${player.name}</span>
+          <span class="leaderboard-caption">Independent</span>
+        </div>
+        <span class="leaderboard-total" data-player="${key}">-</span>
+      </div>`;
+  });
+
   list.innerHTML = html;
   updateLeaderboardRanks(list, '.leaderboard-player');
 }
@@ -720,6 +776,8 @@ function updateScorecard() {
     const player = row.dataset.player;
     const key = `${team}-p${player}`;
     const playerScores = scorecardState[key] || {};
+    const isExtra = team === 'extra';
+    const pastTurn = isExtra ? extraPlayerPastTurn(key) : true;
 
     let total = 0, filled = 0;
     row.querySelectorAll('input[type="number"]').forEach(input => {
@@ -730,6 +788,9 @@ function updateScorecard() {
       applyScoreStyle(input, hole);
       const v = parseInt(scoreVal, 10);
       if (!isNaN(v)) { total += v; filled++; }
+      // Extra players stay locked out of every pre-Turn hole no matter
+      // what the global Enable Editing toggle says.
+      if (isExtra && parseInt(hole, 10) <= TURN_HOLE_NUM) input.disabled = true;
     });
 
     // Penalty counters
@@ -742,8 +803,8 @@ function updateScorecard() {
       rowEl.querySelector('.penalty-count').textContent = count;
       const decBtn = rowEl.querySelector('.penalty-dec');
       const incBtn = rowEl.querySelector('.penalty-inc');
-      decBtn.disabled = !editUnlocked || count <= 0;
-      incBtn.disabled = !editUnlocked;
+      decBtn.disabled = !editUnlocked || count <= 0 || (isExtra && !pastTurn);
+      incBtn.disabled = !editUnlocked || (isExtra && !pastTurn);
       rowEl.classList.toggle('has-count', count > 0);
     });
     const summary = row.querySelector('.penalty-summary');
@@ -770,7 +831,8 @@ function updateScorecard() {
       const selected = playerScores[hole] && playerScores[hole].type === type;
       chip.classList.toggle('active', !!selected);
       const atMax = counts[type] >= DRINK_MAX[type] && !selected;
-      chip.disabled = atMax || !editUnlocked;
+      const lockedPreTurn = isExtra && parseInt(hole, 10) <= TURN_HOLE_NUM;
+      chip.disabled = atMax || !editUnlocked || lockedPreTurn;
       chip.classList.toggle('maxed', atMax);
     });
 

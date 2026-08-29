@@ -40,6 +40,18 @@ Open `script.js`:
   numbers themselves still update live on every keystroke) — same
   "don't jump around mid-entry" behavior the scorecard's own team rows
   always had.
+- **`EXTRA_PLAYERS`** (in `script.js`) — golfers who play and score but
+  aren't on a team, e.g. a wildcard/plus-one. They get a row on the
+  scorecard (tagged "Wildcard") and a spot in Player Standings ("Independent"
+  in place of a team name), but never a team-total row and never a spot in
+  Team Standings. They also don't count toward the "has everyone entered a
+  score" checks that gate secret reveals or trigger reordering — those only
+  look at `TEAMS`. Their score inputs, drink chips, and penalty counters
+  are all locked (grayed out) for every hole up through the Turn, and stay
+  locked no matter what the global Enable Editing toggle says; they unlock
+  automatically once that player has a score logged for the first hole
+  after the Turn. `TURN_HOLE_NUM` is derived automatically from whichever
+  hole has `turnAfter: true` in `HOLES`.
 - Visible to everyone once it unlocks (countdown to Aug 29, 2026, 12:00 PM CT)
   — no password needed just to view it.
 - **Editing** (entering scores or drink types) requires a password:

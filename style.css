@@ -857,6 +857,23 @@ table.scorecard input[type="number"]:disabled{ opacity:.55; cursor:not-allowed; 
   margin-top:2px;
 }
 
+.extra-tag{
+  display:inline-block;
+  font-size:.58rem;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--gold-soft);
+  background:rgba(233,164,0,.14);
+  border:1px solid rgba(233,164,0,.35);
+  border-radius:999px;
+  padding:1px 6px;
+  margin-left:6px;
+  vertical-align:middle;
+}
+table.scorecard tr.extra-player-row{ border-top:2px dashed rgba(255,255,255,.15); }
+table.scorecard tr.extra-player-row .score-cell input:disabled{ opacity:.25; }
+
 .scorecard-editbar{
   display:flex;
   justify-content:space-between;
